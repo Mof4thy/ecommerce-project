@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Preview from "./Preview";
 import ProductShowCase from "./ProductShowCase";
 import { PreviewContext } from "../context/PreviewContext";
+import CustomModal from "./CustomModal";
 const PurchaseOrder = ({ data }) => {
   // ده الجزء اللي في الاسفل
   const { setPreview } = useContext(PreviewContext);
@@ -21,14 +22,14 @@ const PurchaseOrder = ({ data }) => {
   };
   return (
     <>
-          
+      <CustomModal></CustomModal>
       <div className={styles.overlay}></div>
       <div className={styles.purchaseContainer}>
-         {/*المكون ده هو المسؤول عن الجزء اللي علي اليسار*/ }
+        {/*المكون ده هو المسؤول عن الجزء اللي علي اليسار*/}
         <Preview></Preview>
-         {/*المكون ده هو المسؤول عن الجزء اللي علي اليمين*/ }
+        {/*المكون ده هو المسؤول عن الجزء اللي علي اليمين*/}
         <ProductShowCase></ProductShowCase>
-        {/*مازلنا في الجزء اللي في الاسفل*/ }
+        {/*مازلنا في الجزء اللي في الاسفل*/}
         <div className={styles.related}>
           <h2>Related Products</h2>
           <div className={styles.cardContainer}>
@@ -40,7 +41,7 @@ const PurchaseOrder = ({ data }) => {
                 <div className={styles.card} key={item.id}>
                   <div className={styles.img}>
                     <button
-                    // ده الزر الاخضر
+                      // ده الزر الاخضر
                       onClick={() => {
                         // الوظيفة اللي فوق بضيف العنصر للمصفوقة لو مش موجود او بزود عدده لو موجود
                         handleClick(item);

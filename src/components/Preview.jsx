@@ -1,15 +1,14 @@
 import React, { useContext } from "react";
 import styles from "./Preview.module.css";
 import { PreviewContext } from "../context/PreviewContext";
+import CustomModal from "./CustomModal";
 const Preview = () => {
   const { preview, previewIndicator, setPreviewIndicator } =
     useContext(PreviewContext);
   //ده المصفوفة اللي علي اليسار
-  {
-    console.log(preview);
-  }
   return (
     <>
+    
       <div className={`${styles.preview}`}>
         {preview.map((item, idx) => {
           return (
@@ -19,7 +18,7 @@ const Preview = () => {
               onClick={() => {
                 //بغير بس في قيمة ال indicator
                 //ها تفهم قصدي لما تشوف ProductShowCase
-
+                
                 setPreviewIndicator(idx);
               }}></div>
           );

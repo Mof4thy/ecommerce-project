@@ -2,6 +2,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home";
 import "./index.css";
 import PurchaseOrder from "./components/PurchaseOrder";
+import Wishlist from "./components/Wishlist";
+import CustomModal from "./components/CustomModal";
+import Checkout from "./components/checkout";
 const dummy = {
   products: [
     {
@@ -166,10 +169,14 @@ const dummy = {
 function App() {
   return (
     <>
+      
       <Router>
         <Routes>
+          
           {/* <Route path="/" element={<Home />} />           */}
           <Route path="/" element={<PurchaseOrder data = {dummy}/>} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/checkout" element={<Checkout />} />
         </Routes>
       </Router>
     </>

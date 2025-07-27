@@ -3,7 +3,14 @@ import styles from "./ProductShowCase.module.css";
 import { Link } from "react-router-dom";
 import { PreviewContext } from "../context/PreviewContext";
 const ProductShowCase = () => {
-  const { preview, setPreview, previewIndicator } = useContext(PreviewContext);
+  const {
+    preview,
+    setPreview,
+    previewIndicator,
+    setWishlist,
+    SetModal,
+    setCart,
+  } = useContext(PreviewContext);
   // ده الجزء اللي علي اليمين حاليا احنا معانا ال المصفوفة فيها العناصر اللي اضفناها
   return (
     <>
@@ -15,8 +22,7 @@ const ProductShowCase = () => {
       <div className={`${styles.text} ${preview[0] ? "" : styles.blank}`}>
         <h2 className={styles.heading}>{preview[previewIndicator]?.name}</h2>
         <strong>
-          {/* ?. بتجنب خطأ undefind */}
-          ${preview[previewIndicator]?.price?.min}{" "}
+          {/* ?. بتجنب خطأ undefind */}${preview[previewIndicator]?.price?.min}{" "}
           {preview[previewIndicator]?.price?.max ===
           preview[previewIndicator]?.price?.min
             ? ""
@@ -60,11 +66,50 @@ const ProductShowCase = () => {
             <i className="fa-solid fa-plus"></i>
           </li>
         </ul>
-        <button className={styles.addBtn}>
+        <button
+          className={styles.addBtn}
+          onClick={() => {
+            setCart((prev) => {
+              const res = prev.find(
+                (el) => el.id === preview[previewIndicator]?.id
+              );
+              if (res) {
+                return prev.map((item) =>
+                  item.id === preview[previewIndicator]?.id
+                    ? { ...item, quantity: preview[previewIndicator]?.quantity }
+                    : item
+                );
+              }
+              return [...prev, preview[previewIndicator]];
+            });
+          }}>
           <i className="fa-solid fa-chart-gantt"></i> Add To Cart
         </button>
         <div style={{ display: "flex", gap: "8px" }}>
-          <button className={styles.outlinedBtn}>
+          <button
+            className={styles.outlinedBtn}
+            onClick={() => {
+              SetModal(true);
+              setWishlist((prev) => {
+                const res = prev.find(
+                  (el) => el.id == preview[previewIndicator]?.id
+                );
+                if (res) {
+                  if (res.quantity != preview[previewIndicator].quantity) {
+                    return prev.map((item) =>
+                      item.id === preview[previewIndicator].id
+                        ? {
+                            ...item,
+                            quantity: preview[previewIndicator].quantity,
+                          }
+                        : item
+                    );
+                  }
+                  return [...prev]; //مش عايزه يضيف كذا مرة
+                }
+                return [...prev, preview[previewIndicator]];
+              });
+            }}>
             <i className="fa-regular fa-heart"></i> Whish list
           </button>
           <button className={styles.outlinedBtn}>
