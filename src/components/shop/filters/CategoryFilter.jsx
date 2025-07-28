@@ -6,7 +6,7 @@ const CategoryFilter = ({selectedCategorys, setSelectedCategorys}) => {
 
     const categories = [...new Set(productsData.map(product => product.category))].map((category, index) => {
         return {
-            id: index + 1,
+            id: `category-${index + 1}`,
             name: category,
         }
     });

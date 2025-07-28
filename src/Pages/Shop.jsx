@@ -11,21 +11,46 @@ const Shop = () => {
 
 
     const [products] = useState(productsData);
+    
     const [filteredProducts, setFilteredProducts] = useState(productsData);
-
     const [selectedCategorys, setSelectedCategorys] = useState([]);
     const [selectedBrands, setSelectedBrands] = useState([]);
 
+    const [sortBy, setSortBy] = useState("newest");
+
+    // const [currentPage, setCurrentPage] = useState(1);
+    // const productsPerPage = 8;
+
+    // const indexOfLastProduct = currentPage * productsPerPage;
+    // const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    // const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+    // const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+
+    
+
     useEffect(() => {
+        // First filter the products
         const filtered = products.filter((product) => {
             const categoryMatch = selectedCategorys.length === 0 || selectedCategorys.includes(product.category);
             const brandMatch = selectedBrands.length === 0 || selectedBrands.includes(product.brand);
             return categoryMatch && brandMatch;
         });
-        
-        setFilteredProducts(filtered);
-    }, [selectedCategorys, selectedBrands, products]);
 
+       
+        // Then sort the filtered products
+        const sorted = [...filtered].sort((a, b) => {
+            if (sortBy === "price-low-to-high") return a.price - b.price;
+            if (sortBy === "price-high-to-low") return b.price - a.price;
+            if (sortBy === "name-a-to-z") return a.name.localeCompare(b.name);
+            if (sortBy === "name-z-to-a") return b.name.localeCompare(a.name);
+            return 0;
+        });
+
+        setFilteredProducts(sorted);
+        // setCurrentPage(1);
+    }, [selectedCategorys, selectedBrands, products, sortBy]);
+
+    
 
     return (    
         <div className="border-2 border-gray-200 py-6 md:py-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -37,9 +62,15 @@ const Shop = () => {
 
                 <div className=" flex flex-col gap-6 w-full lg:w-4/5">
                     <ShopBanner/>
-                    <SortDropdown/>                    
+                    <SortDropdown setSortBy={setSortBy}/>                    
                     <ProductGrid products={filteredProducts}/>
-                    <Pagination/>
+
+                    {/* pagination */}
+                    {/* <Pagination
+                      currentPage={currentPage} 
+                      totalPages={totalPages} 
+                      onPageChange={setCurrentPage}
+                      /> */}
                 </div>
 
             </div>

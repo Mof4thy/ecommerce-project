@@ -6,7 +6,7 @@ const BrandFilter = ({selectedBrands, setSelectedBrands}) => {
 
     const brands = [...new Set(productsData.map(product => product.brand))].map((brand, index) => {
         return {
-            id: index + 1,
+            id: `brand-${index + 1}`,
             name: brand,
         }
     });
