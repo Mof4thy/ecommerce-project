@@ -3,8 +3,6 @@ import { createContext, useEffect, useState } from "react";
 
 export const PreviewContext = createContext({});
 
-import React from "react";
-
 const savedData = localStorage.getItem("preview")
   ? JSON.parse(localStorage.getItem("preview"))
   : [];
@@ -23,12 +21,15 @@ const PreviewContextProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem("preview", JSON.stringify(preview)); //بخزن القيمة الجديدة في المصفوفة بعد التغيير
   }, [preview]);
+
   useEffect(() => {
     localStorage.setItem("wishlist", JSON.stringify(wishlist));
   }, [wishlist]);
+
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
+  
   return (
     <PreviewContext.Provider
       value={{

@@ -1,1 +1,16 @@
 @import "tailwindcss";
+
+
+*{
+    box-sizing: border-box !important;
+  }
+  
+/*   
+  @theme {
+    --color-Primary-Red: #C1272D;         
+    --color-Warm-Accent: #FFD460;       
+    --color-Background-Neutral: #FAF3E0;  
+    --color-Fresh-Accent: #7C9473;        
+    --color-Dark-Accent: #3E2C23;         
+    --color-Light-Gray: #D3D3D3;          
+  } */

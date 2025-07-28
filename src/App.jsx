@@ -5,6 +5,8 @@ import PurchaseOrder from "./components/PurchaseOrder";
 import Wishlist from "./components/Wishlist";
 import CustomModal from "./components/CustomModal";
 import Checkout from "./components/checkout";
+import Shop from "./Pages/Shop";
+import Layout from "./components/Layout";
 const dummy = {
   products: [
     {
@@ -169,14 +171,20 @@ const dummy = {
 function App() {
   return (
     <>
-      
+
       <Router>
         <Routes>
-          
-          {/* <Route path="/" element={<Home />} />           */}
-          <Route path="/" element={<PurchaseOrder data = {dummy}/>} />
-          <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/checkout" element={<Checkout />} />
+          {/* layout is the main layout that contains the navbar and footer and the children routes that are the pages  */}
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="/home" element={<Home/>} /> 
+            <Route path="/shop" element={<Shop/>} />
+            <Route path="/wishlist" element={<Wishlist/>} />
+            <Route path="/checkout" element={<Checkout/>} />
+            <Route path="/" element={<PurchaseOrder data = {dummy}/>} />
+          </Route>
+          <Route path="*" element={<div>Page Not Found</div>} />
+
         </Routes>
       </Router>
     </>
