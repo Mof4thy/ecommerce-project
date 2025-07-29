@@ -7,6 +7,8 @@ import CustomModal from "./components/CustomModal";
 import Checkout from "./components/checkout";
 import Shop from "./Pages/Shop";
 import Layout from "./components/Layout";
+import Register from "./components/Auth/Register";
+import Login from "./components/Auth/Login";
 const dummy = {
   products: [
     {
@@ -177,6 +179,8 @@ function App() {
           {/* layout is the main layout that contains the navbar and footer and the children routes that are the pages  */}
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
+            <Route path="/register" element={<Register/>} /> 
+            <Route path="/login" element={<Login/>} /> 
             <Route path="/home" element={<Home/>} /> 
             <Route path="/shop" element={<Shop/>} />
             <Route path="/wishlist" element={<Wishlist/>} />
