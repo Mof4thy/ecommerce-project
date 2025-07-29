@@ -27,7 +27,7 @@ import {
 } from "react-icons/lu";
 
 import logo from "../../assets/Link - Bacola Store.jpg";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, NavLink } from "react-router-dom";
 
 export default function Navbar() {
   const [openuser, setOpenUSer] = useState(false);
@@ -44,7 +44,6 @@ export default function Navbar() {
   };
 
   // إغلاق القائمة عند الضغط خارجها
- 
 
   //  لينكات الناف بار
   const categories = [
@@ -62,20 +61,20 @@ export default function Navbar() {
   ];
 
   const cartItems = [
-    // {
-    //   id: 1,
-    //   name: "Apple",
-    //   price: 10,
-    //   qty: 2,
-    //   image: logo,
-    // },
-    // {
-    //   id: 2,
-    //   name: "Banana",
-    //   price: 5,
-    //   qty: 3,
-    //   image: logo,
-    // },
+    {
+      id: 1,
+      name: "Apple",
+      price: 10,
+      qty: 2,
+      image: logo,
+    },
+    {
+      id: 2,
+      name: "Banana",
+      price: 5,
+      qty: 3,
+      image: logo,
+    },
   ];
   const subtotal = cartItems.reduce(
     (acc, item) => acc + item.price * item.qty,
@@ -85,27 +84,20 @@ export default function Navbar() {
   // Sign In هل يوجد توكن لو موجود يبق كده ف حاله اللوجن لو مش موجود يبقي هيتغير الايقون لل
   const isAuthenticated = !!localStorage.getItem("token");
 
- useEffect(() => {
-  const handler = (e) => {
-    if (
-      menuRef.current &&
-      !menuRef.current.contains(e.target)
-    ) {
-      setOpenUSer(false);
-    }
+  useEffect(() => {
+    const handler = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setOpenUSer(false);
+      }
 
-    if (
-      cartRef.current &&
-      !cartRef.current.contains(e.target)
-    ) {
-      setOpenCart(false);
-    }
-  };
+      if (cartRef.current && !cartRef.current.contains(e.target)) {
+        setOpenCart(false);
+      }
+    };
 
-  document.addEventListener("mousedown", handler);
-  return () => document.removeEventListener("mousedown", handler);
-}, []);
-
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
   return (
     <>
@@ -156,15 +148,16 @@ export default function Navbar() {
                     <Link
                       to="/profile"
                       onMouseDown={(e) => {
-                        e.stopPropagation(); 
-                        setOpenUSer(false);
+                        e.stopPropagation(); // يمنع غلق القائمة قبل تنفيذ التنقل
                       }}
+                      onClick={() => setOpenUSer(false)}
                       className="px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2"
                     >
                       <LuUserRound size={20} />
                       Profile
                     </Link>
                     <button
+                      onMouseDown={(e) => e.stopPropagation()}
                       onClick={() => {
                         setOpenUSer(false);
                         handleLogout();
@@ -259,6 +252,7 @@ export default function Navbar() {
                       <div className="flex flex-col gap-2">
                         <Link
                           to="/cart"
+                          onMouseDown={(e) => e.stopPropagation()}
                           onClick={() => setOpenCart(false)}
                           className="w-full bg-gray-100 hover:bg-gray-200 text-sm text-center py-2"
                         >
@@ -266,6 +260,7 @@ export default function Navbar() {
                         </Link>
                         <Link
                           to="/checkout"
+                          onMouseDown={(e) => e.stopPropagation()}
                           onClick={() => setOpenCart(false)}
                           className="w-full bg-[#EA2B0F]  hover:bg-[#f75c3c] text-white text-sm text-center py-2"
                         >
@@ -336,6 +331,9 @@ export default function Navbar() {
                     </div>
                     <div
                       to="/profile"
+                      onMouseDown={(e) => {
+                        e.stopPropagation(); // يمنع غلق القائمة قبل تنفيذ التنقل
+                      }}
                       onClick={() => setOpenUSer(false)}
                       className="px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2"
                     >
@@ -437,6 +435,7 @@ export default function Navbar() {
                       <div className="flex flex-col gap-2">
                         <Link
                           to="/cart"
+                          onMouseDown={(e) => e.stopPropagation()}
                           onClick={() => setOpenCart(false)}
                           className="w-full bg-gray-100 hover:bg-gray-200 text-sm text-center py-2"
                         >
@@ -444,6 +443,7 @@ export default function Navbar() {
                         </Link>
                         <Link
                           to="/checkout"
+                          onMouseDown={(e) => e.stopPropagation()}
                           onClick={() => setOpenCart(false)}
                           className="w-full bg-[#EA2B0F]  hover:bg-[#f75c3c] text-white text-sm text-center py-2"
                         >
@@ -519,60 +519,89 @@ export default function Navbar() {
             } md:flex flex-col md:flex-row items-start md:items-center gap-4 text-[15px] font-semibold text-[#3E445A] w-full md:w-auto`}
           >
             <li>
-              <Link
+              <NavLink
                 to="/"
-                className="text-[#35AFA0] bg-[#F0FAFF] p-2 rounded-full"
+                className={({ isActive }) =>
+                  isActive
+                    ? "bg-[#F0FAFF] text-[#35AFA0] p-2 rounded-full"
+                    : "p-2 rounded-full hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
+                }
               >
                 HOME
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link
-                to="#"
-                className="p-2 rounded-full hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
+              <NavLink
+                to="/shop"
+                  className={({ isActive }) =>
+                  isActive
+                    ? "bg-[#F0FAFF] text-[#35AFA0] p-2 rounded-full"
+                    : "p-2 rounded-full hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
+                }
               >
                 SHOP
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link
-                to="#"
-                className="flex items-center gap-2 p-2 rounded-full hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
+              <NavLink
+                to="/Meats&Seafood"
+                className={({isActive})=>
+                isActive
+                ? "flex items-center gap-2 p-2 rounded-full bg-[#F0FAFF] text-[#35AFA0]"
+                :"flex items-center gap-2 p-2 rounded-full hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
+                }
+                // className="flex items-center gap-2 p-2 rounded-full hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
               >
                 <TbMeat size={20} /> Meats & Seafood
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link
-                to="#"
-                className="flex items-center gap-2 p-2 rounded-full hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
+              <NavLink
+                to="/bekery"
+                 className={({isActive})=>
+                isActive
+                ? "flex items-center gap-2 p-2 rounded-full bg-[#F0FAFF] text-[#35AFA0]"
+                :"flex items-center gap-2 p-2 rounded-full hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
+                }
               >
                 <MdOutlineBakeryDining size={20} /> Bakery
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link
-                to="#"
-                className="flex items-center gap-2 p-2 rounded-full hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
+              <NavLink
+                to="/beverages"
+                 className={({isActive})=>
+                isActive
+                ? "flex items-center gap-2 p-2 rounded-full bg-[#F0FAFF] text-[#35AFA0]"
+                :"flex items-center gap-2 p-2 rounded-full hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
+                }
               >
                 <FiCoffee size={20} /> Beverages
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link
-                to="#"
-                className="p-2 rounded-full hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
+              <NavLink
+                to="/blog"
+                className={({ isActive }) =>
+                  isActive
+                    ? "bg-[#F0FAFF] text-[#35AFA0] p-2 rounded-full"
+                    : "p-2 rounded-full hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
+                }
               >
                 Blog
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link
-                to="#"
-                className="p-2 rounded-full hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
+              <NavLink
+                to="/contact"
+                 className={({ isActive }) =>
+                  isActive
+                    ? "bg-[#F0FAFF] text-[#35AFA0] p-2 rounded-full"
+                    : "p-2 rounded-full hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
+                }
               >
                 Contact
-              </Link>
+              </NavLink>
             </li>
           </ul>
         </div>
