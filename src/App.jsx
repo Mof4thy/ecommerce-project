@@ -9,6 +9,7 @@ import Shop from "./Pages/Shop";
 import Layout from "./components/Layout";
 import Register from "./components/Auth/Register";
 import Login from "./components/Auth/Login";
+
 const dummy = {
   products: [
     {
