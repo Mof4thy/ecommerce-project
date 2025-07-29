@@ -9,6 +9,8 @@ import Shop from "./Pages/Shop";
 import Layout from "./components/Layout";
 import Register from "./components/Auth/Register";
 import Login from "./components/Auth/Login";
+import Profile from "./Pages/Profile";
+import Cart from "./Pages/Cart";
 
 const dummy = {
   products: [
@@ -183,9 +185,11 @@ function App() {
             <Route path="/register" element={<Register/>} /> 
             <Route path="/login" element={<Login/>} /> 
             <Route path="/home" element={<Home/>} /> 
+            <Route path="/profile" element={<Profile/>} /> 
             <Route path="/shop" element={<Shop/>} />
             <Route path="/wishlist" element={<Wishlist/>} />
             <Route path="/checkout" element={<Checkout/>} />
+            <Route path="/cart" element={<Cart/>} />
             <Route path="/PurchaseOrder" element={<PurchaseOrder data = {dummy}/>} />
           </Route>
           <Route path="*" element={<div>Page Not Found</div>} />
