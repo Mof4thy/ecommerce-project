@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App.jsx";
 import PreviewContextProvider from "./context/PreviewContext.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import UserProvider from "./context/UserContext.jsx";
+import {UserProvider} from "./context/UserContext.jsx";
 
 const queryClient = new QueryClient();
 
