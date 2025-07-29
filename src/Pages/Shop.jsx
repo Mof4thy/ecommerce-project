@@ -22,7 +22,7 @@ const Shop = () => {
 
     // pagination
     const [currentPage, setCurrentPage] = useState(1);
-    const productsPerPage = 8;
+    const productsPerPage = 12;
     const [totalPages, setTotalPages] = useState(1);
 
     // visible products
@@ -50,7 +50,7 @@ const Shop = () => {
         setFilteredProducts(sorted);
     
         // Reset to first page on filter/sort change
-        // setCurrentPage(1);
+        setCurrentPage(1);
     }, [selectedCategorys, selectedBrands, products, sortBy]);
 
     
@@ -71,7 +71,7 @@ const Shop = () => {
 
 
     return (    
-        <div className="border-2 border-gray-200 py-6 md:py-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div>
             <div className="flex flex-col lg:flex-row gap-8">
 
                 <aside  className=" w-full lg:w-1/5">
