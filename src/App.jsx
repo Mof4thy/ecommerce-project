@@ -185,7 +185,7 @@ function App() {
             <Route path="/shop" element={<Shop/>} />
             <Route path="/wishlist" element={<Wishlist/>} />
             <Route path="/checkout" element={<Checkout/>} />
-            <Route path="/" element={<PurchaseOrder data = {dummy}/>} />
+            <Route path="/PurchaseOrder" element={<PurchaseOrder data = {dummy}/>} />
           </Route>
           <Route path="*" element={<div>Page Not Found</div>} />
 
