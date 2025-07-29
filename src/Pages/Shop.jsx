@@ -12,32 +12,32 @@ const Shop = () => {
 
     const [products] = useState(productsData);
     
+    // filtered products
     const [filteredProducts, setFilteredProducts] = useState(productsData);
     const [selectedCategorys, setSelectedCategorys] = useState([]);
     const [selectedBrands, setSelectedBrands] = useState([]);
 
+    // sort by
     const [sortBy, setSortBy] = useState("newest");
 
-    // const [currentPage, setCurrentPage] = useState(1);
-    // const productsPerPage = 8;
+    // pagination
+    const [currentPage, setCurrentPage] = useState(1);
+    const productsPerPage = 8;
+    const [totalPages, setTotalPages] = useState(1);
 
-    // const indexOfLastProduct = currentPage * productsPerPage;
-    // const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    // const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
-    // const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+    // visible products
+    const [visibleProducts, setVisibleProducts] = useState([]);
 
-    
 
     useEffect(() => {
-        // First filter the products
+        // Step 1: Filter
         const filtered = products.filter((product) => {
             const categoryMatch = selectedCategorys.length === 0 || selectedCategorys.includes(product.category);
             const brandMatch = selectedBrands.length === 0 || selectedBrands.includes(product.brand);
             return categoryMatch && brandMatch;
         });
-
-       
-        // Then sort the filtered products
+    
+        // Step 2: Sort
         const sorted = [...filtered].sort((a, b) => {
             if (sortBy === "price-low-to-high") return a.price - b.price;
             if (sortBy === "price-high-to-low") return b.price - a.price;
@@ -45,32 +45,55 @@ const Shop = () => {
             if (sortBy === "name-z-to-a") return b.name.localeCompare(a.name);
             return 0;
         });
-
+    
+        // Save full sorted list for pagination
         setFilteredProducts(sorted);
+    
+        // Reset to first page on filter/sort change
         // setCurrentPage(1);
     }, [selectedCategorys, selectedBrands, products, sortBy]);
 
     
+
+     // Handle pagination: calculate which products to show on current page
+     useEffect(() => {
+        const indexOfLastProduct = currentPage * productsPerPage;
+        const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+        const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+        setVisibleProducts(currentProducts);
+
+        // total pages
+        const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+        setTotalPages(totalPages);
+
+    }, [filteredProducts, currentPage]);
+    
+
 
     return (    
         <div className="border-2 border-gray-200 py-6 md:py-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col lg:flex-row gap-8">
 
                 <aside  className=" w-full lg:w-1/5">
-                    <FiltersSidebar selectedCategorys={selectedCategorys} selectedBrands={selectedBrands} setSelectedCategorys={setSelectedCategorys} setSelectedBrands={setSelectedBrands}/>
+                    <FiltersSidebar 
+                        selectedCategorys={selectedCategorys} 
+                        selectedBrands={selectedBrands} 
+                        setSelectedCategorys={setSelectedCategorys} 
+                        setSelectedBrands={setSelectedBrands}
+                        />
                 </aside >
 
                 <div className=" flex flex-col gap-6 w-full lg:w-4/5">
                     <ShopBanner/>
                     <SortDropdown setSortBy={setSortBy}/>                    
-                    <ProductGrid products={filteredProducts}/>
+                    <ProductGrid products={visibleProducts}/>
 
                     {/* pagination */}
-                    {/* <Pagination
+                    <Pagination
                       currentPage={currentPage} 
                       totalPages={totalPages} 
                       onPageChange={setCurrentPage}
-                      /> */}
+                      />
                 </div>
 
             </div>
@@ -79,3 +102,4 @@ const Shop = () => {
 }
 
 export default Shop;
+
