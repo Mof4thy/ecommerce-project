@@ -1,3 +1,6 @@
+
+
+
 import { useState, useEffect } from "react";
 import img1 from "../images/image1.png";
 import img2 from "../images/image2.png";
