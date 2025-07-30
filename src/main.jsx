@@ -17,5 +17,6 @@ createRoot(document.getElementById("root")).render(
         </PreviewContextProvider>
       </UserProvider>
     </QueryClientProvider>
+
   </StrictMode>
 );
