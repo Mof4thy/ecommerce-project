@@ -1,7 +1,8 @@
 // import productImage from "../../assets/product-image.png";
 import { Plus, Minus , Star } from 'lucide-react';
+import React from 'react';
 
-const ProductCard = ({product}) => {
+const ProductCard = React.memo(({product}) => {
     return (
         
         <div className="border border-gray-200 px-4 py-4 rounded-md flex flex-col gap-2 h-full ">
@@ -35,6 +36,6 @@ const ProductCard = ({product}) => {
             </div>
         </div>
     )
-}
+})
 
 export default ProductCard;

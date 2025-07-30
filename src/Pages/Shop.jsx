@@ -3,7 +3,7 @@ import ShopBanner from "../components/shop/ShopBanner";
 import SortDropdown from "../components/shop/SortDropdown ";
 import ProductGrid from "../components/shop/ProductGrid ";
 import Pagination from "../components/shop/Pagination ";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useProducts } from "../hooks/useProducts";
 
 const Shop = () => {
@@ -14,7 +14,6 @@ const Shop = () => {
 
 
     // filtered products
-    const [filteredProducts, setFilteredProducts] = useState([]);
     const [selectedCategorys, setSelectedCategorys] = useState([]);
     const [selectedBrands, setSelectedBrands] = useState([]);
 
@@ -30,17 +29,28 @@ const Shop = () => {
     const [visibleProducts, setVisibleProducts] = useState([]);
 
 
-    useEffect(() => {
 
-        if(!products) return;
+    const categories = useMemo(()=>{
+        if(!products) return [];
+        return [...new Set(products.map(product => product.category))];
+    }, [products]);
 
+    const brands = useMemo(()=>{
+        if(!products) return [];
+        return [...new Set(products.map(product => product.brand))];
+    }, [products]);
+
+
+    const filteredAndSortedProducts = useMemo(() => {
+        if (!products) return [];
+        
         // Step 1: Filter
         const filtered = products.filter((product) => {
             const categoryMatch = selectedCategorys.length === 0 || selectedCategorys.includes(product.category);
             const brandMatch = selectedBrands.length === 0 || selectedBrands.includes(product.brand);
             return categoryMatch && brandMatch;
         });
-    
+        
         // Step 2: Sort
         const sorted = [...filtered].sort((a, b) => {
             if (sortBy === "price-low-to-high") return a.price - b.price;
@@ -49,29 +59,29 @@ const Shop = () => {
             if (sortBy === "name-z-to-a") return b.name.localeCompare(a.name);
             return 0;
         });
-    
-        // Save full sorted list for pagination
-        setFilteredProducts(sorted);
-    
-        // Reset to first page on filter/sort change
-        setCurrentPage(1);
-    }, [selectedCategorys, selectedBrands, products, sortBy]);
+        
+        return sorted;
+    }, [products, selectedCategorys, selectedBrands, sortBy]);
 
     
 
      // Handle pagination: calculate which products to show on current page
-     useEffect(() => {
+    useEffect(() => {
+        
         const indexOfLastProduct = currentPage * productsPerPage;
         const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-        const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+        const currentProducts = filteredAndSortedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
         setVisibleProducts(currentProducts);
 
         // total pages
-        const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+        const totalPages = Math.ceil(filteredAndSortedProducts.length / productsPerPage);
         setTotalPages(totalPages);
-
-    }, [filteredProducts, currentPage]);
-    
+        
+        // Reset to first page when filters change
+        if (currentPage > totalPages && totalPages > 0) {
+            setCurrentPage(1);
+        }
+    }, [filteredAndSortedProducts, currentPage]);
 
 
     // Loading state
@@ -104,6 +114,8 @@ const Shop = () => {
                         selectedBrands={selectedBrands} 
                         setSelectedCategorys={setSelectedCategorys} 
                         setSelectedBrands={setSelectedBrands}
+                        categories={categories}
+                        brands={brands}
                         />
                 </aside >
 

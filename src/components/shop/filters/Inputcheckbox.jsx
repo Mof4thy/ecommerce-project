@@ -1,4 +1,6 @@
-const Inputcheckbox = ({name, id , onChange}) => {
+import React from "react";
+
+const Inputcheckbox = React.memo(({name, id , onChange}) => {
 
     return (
         <div className="flex items-center gap-2" >
@@ -6,7 +8,7 @@ const Inputcheckbox = ({name, id , onChange}) => {
             <label htmlFor={id} className="text-md font-medium text-gray-500">{name}</label>
         </div>
     )
-}
+})
 
 export default Inputcheckbox;
 

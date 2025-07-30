@@ -1,7 +1,7 @@
+import React from "react";
 
 
-
-const SortDropdown = ( {setSortBy} ) => {
+const SortDropdown = React.memo(( {setSortBy} ) => {
     return (
         <div className="flex justify-between items-center bg-gray-200 py-2 px-4 rounded-md">
             <h1 className="text-md font-semibold">62 Products</h1>
@@ -17,6 +17,6 @@ const SortDropdown = ( {setSortBy} ) => {
             </div>
         </div>
     )
-}
+})
 
 export default SortDropdown;

@@ -1,5 +1,7 @@
 import { ArrowLeft, ArrowRight } from "lucide-react";
-const Pagination = ( {currentPage, totalPages, onPageChange} ) => {
+import React from "react";
+
+const Pagination = React.memo(( {currentPage, totalPages, onPageChange} ) => {
     return (
         <div className="flex flex-wrap justify-center items-center gap-6 mt-4">
             
@@ -16,7 +18,7 @@ const Pagination = ( {currentPage, totalPages, onPageChange} ) => {
             )}
         </div>
     )
-}
+})
 
 export default Pagination;
 

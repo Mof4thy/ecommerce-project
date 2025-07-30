@@ -1,17 +1,9 @@
 import Inputcheckbox from "./Inputcheckbox";
-import { useProducts } from "../../../hooks/useProducts";
+import React from "react";
+
+const BrandFilter = React.memo(({selectedBrands, setSelectedBrands, brands}) => {
 
 
-const BrandFilter = ({selectedBrands, setSelectedBrands}) => {
-
-    const {data: products} = useProducts();
-
-    const brands = [...new Set(products.map(product => product.brand))].map((brand, index) => {
-        return {
-            id: `brand-${index + 1}`,
-            name: brand,
-        }
-    });
     
     const handleBrandToggle = (brandName) => {
         if (selectedBrands.includes(brandName)) {
@@ -28,14 +20,14 @@ const BrandFilter = ({selectedBrands, setSelectedBrands}) => {
 
             <div className="flex flex-col gap-2">
 
-                {brands.map((brand)=>(
-                        <Inputcheckbox key={brand.id} name={brand.name} id={brand.id} onChange={() => handleBrandToggle(brand.name)} />
+                {brands.map((brand, index)=>(
+                        <Inputcheckbox key={index} name={brand} id={index} onChange={() => handleBrandToggle(brand)} />
                 ))}
             </div>
 
 
         </div>
     )
-}
+})
 
 export default BrandFilter;

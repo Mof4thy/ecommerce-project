@@ -1,5 +1,7 @@
 import banner from "../../assets/shop-banner.jpg.png"
-const ShopBanner = () => {
+import React from "react";
+
+const ShopBanner = React.memo(() => {
 
     return (    
         <div className="flex flex-col gap-4 relative ">
@@ -16,6 +18,6 @@ const ShopBanner = () => {
     )
 
 
-}
+})
 
 export default ShopBanner;

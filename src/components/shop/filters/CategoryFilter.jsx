@@ -1,17 +1,9 @@
+import React from "react";
 import Inputcheckbox from "./Inputcheckbox";
-import { useProducts } from "../../../hooks/useProducts";
 
-const CategoryFilter = ({selectedCategorys, setSelectedCategorys}) => {
-
-    const {data: products} = useProducts();
+const CategoryFilter = React.memo(({selectedCategorys, setSelectedCategorys, categories}) => {
 
 
-    const categories = [...new Set(products.map(product => product.category))].map((category, index) => {
-        return {
-            id: `category-${index + 1}`,
-            name: category,
-        }
-    });
     
     const handleCategoryToggle = (categoryName) => {
         if (selectedCategorys.includes(categoryName)) {
@@ -29,14 +21,14 @@ const CategoryFilter = ({selectedCategorys, setSelectedCategorys}) => {
 
             <div className="flex flex-col gap-2">
 
-                {categories.map((category)=>(
-                    <Inputcheckbox key={category.id} name={category.name} id={category.id} onChange={() => handleCategoryToggle(category.name)} />
+                {categories.map((category, index)=>(
+                    <Inputcheckbox key={index} name={category} id={index} onChange={() => handleCategoryToggle(category)} />
                 ))}
             </div>
 
 
         </div>
     )
-}
+})
 
 export default CategoryFilter;

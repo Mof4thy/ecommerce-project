@@ -194,9 +194,9 @@ function App() {
             <Route path="/profile" element={<Profile/>} /> 
             <Route path="/shop" element={<Shop/>} />
             <Route path="/wishlist" element={<Wishlist/>} />
-              <Route path="/about" element={<About/>} />
-                <Route path="/contact" element={<Contact/>} /> 
-                 <Route path="/blog" element={<Blog/>} />
+            <Route path="/about" element={<About/>} />
+            <Route path="/contact" element={<Contact/>} /> 
+            <Route path="/blog" element={<Blog/>} />
             <Route path="/checkout" element={<Checkout/>} />
             <Route path="/cart" element={<Cart/>} />
             <Route path="/PurchaseOrder" element={<PurchaseOrder data = {dummy}/>} />
