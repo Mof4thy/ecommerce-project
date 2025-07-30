@@ -1,10 +1,12 @@
 import Inputcheckbox from "./Inputcheckbox";
-import productsData from "../../../data/products";
+import { useProducts } from "../../../hooks/useProducts";
 
 const CategoryFilter = ({selectedCategorys, setSelectedCategorys}) => {
 
+    const {data: products} = useProducts();
 
-    const categories = [...new Set(productsData.map(product => product.category))].map((category, index) => {
+
+    const categories = [...new Set(products.map(product => product.category))].map((category, index) => {
         return {
             id: `category-${index + 1}`,
             name: category,

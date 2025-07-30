@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const useProducts = () => {
 
-    return useQuery(
+    const {data, isLoading, error} = useQuery(
         {
             queryKey:["products"],
             queryFn:getProducts,
@@ -12,6 +12,7 @@ const useProducts = () => {
         }
     )
 
+    return {data, isLoading, error};
 }
 
 export { useProducts };

@@ -6,6 +6,7 @@ const useProductById = (id) => {
     queryKey: ["product", id],
     queryFn: () => getProductById(id),
     enabled: !!id,
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 };
 

@@ -4,7 +4,7 @@ const getProducts = async () =>{
 
     try {
         const response = await api.get("/products");
-        return response.data;
+        return response.data.products;
     }
     catch(error){
         console.log(error);

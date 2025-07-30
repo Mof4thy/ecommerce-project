@@ -1,10 +1,12 @@
 import Inputcheckbox from "./Inputcheckbox";
-import productsData from "../../../data/products";
+import { useProducts } from "../../../hooks/useProducts";
 
 
 const BrandFilter = ({selectedBrands, setSelectedBrands}) => {
 
-    const brands = [...new Set(productsData.map(product => product.brand))].map((brand, index) => {
+    const {data: products} = useProducts();
+
+    const brands = [...new Set(products.map(product => product.brand))].map((brand, index) => {
         return {
             id: `brand-${index + 1}`,
             name: brand,

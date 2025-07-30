@@ -3,17 +3,18 @@ import ShopBanner from "../components/shop/ShopBanner";
 import SortDropdown from "../components/shop/SortDropdown ";
 import ProductGrid from "../components/shop/ProductGrid ";
 import Pagination from "../components/shop/Pagination ";
-import productsData from "../data/products";
 import { useState, useEffect } from "react";
-
+import { useProducts } from "../hooks/useProducts";
 
 const Shop = () => {
 
+    // products data from the server (cached)
+    const { data: products, isLoading, error } = useProducts();
 
-    const [products] = useState(productsData);
-    
+
+
     // filtered products
-    const [filteredProducts, setFilteredProducts] = useState(productsData);
+    const [filteredProducts, setFilteredProducts] = useState([]);
     const [selectedCategorys, setSelectedCategorys] = useState([]);
     const [selectedBrands, setSelectedBrands] = useState([]);
 
@@ -30,6 +31,9 @@ const Shop = () => {
 
 
     useEffect(() => {
+
+        if(!products) return;
+
         // Step 1: Filter
         const filtered = products.filter((product) => {
             const categoryMatch = selectedCategorys.length === 0 || selectedCategorys.includes(product.category);
@@ -69,6 +73,26 @@ const Shop = () => {
     }, [filteredProducts, currentPage]);
     
 
+
+    // Loading state
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center min-h-screen">
+                <div className="text-lg">Loading products...</div>
+            </div>
+        );
+    }
+
+    // Error state
+    if (error) {
+        return (
+            <div className="flex justify-center items-center min-h-screen">
+                <div className="text-red-500 text-lg">
+                    Error loading products: {error.message}
+                </div>
+            </div>
+        );
+    }
 
     return (    
         <div>
