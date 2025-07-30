@@ -3,8 +3,11 @@ import { createContext, useEffect, useState } from "react";
 
 export const PreviewContext = createContext({});
 
+<<<<<<< HEAD
 import React from "react";
 
+=======
+>>>>>>> f8fb35234cdf9fc8edfd9f2d63185e2ea3907c60
 const savedData = localStorage.getItem("preview")
   ? JSON.parse(localStorage.getItem("preview"))
   : [];
@@ -23,12 +26,24 @@ const PreviewContextProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem("preview", JSON.stringify(preview)); //بخزن القيمة الجديدة في المصفوفة بعد التغيير
   }, [preview]);
+<<<<<<< HEAD
   useEffect(() => {
     localStorage.setItem("wishlist", JSON.stringify(wishlist));
   }, [wishlist]);
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
+=======
+
+  useEffect(() => {
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  }, [wishlist]);
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
+  
+>>>>>>> f8fb35234cdf9fc8edfd9f2d63185e2ea3907c60
   return (
     <PreviewContext.Provider
       value={{

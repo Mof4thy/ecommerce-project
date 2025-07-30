@@ -19,7 +19,11 @@ const CustomModal = () => {
                 }}>
                 Close
               </button>
-              <Link style={{flex:1,background:"#35AFA0"}} to="wishlist">Wish List</Link>
+
+
+
+              <Link style={{flex:1,background:"#35AFA0"}} to="/wishlist">Wish List</Link>
+
             </div>
           </div>
         </>
