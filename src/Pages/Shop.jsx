@@ -10,6 +10,7 @@ const Shop = () => {
 
     // products data from the server (cached)
     const { data: products, isLoading, error } = useProducts();
+    
 
 
 

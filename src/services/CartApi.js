@@ -1,5 +1,5 @@
 
-import api from "./api";
+import api from "./Api";
 
 const addToCart = async (productId, token) => {
     try {

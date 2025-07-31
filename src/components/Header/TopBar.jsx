@@ -3,21 +3,11 @@ import ico from "../../assets/Icon.png";
 import { Link } from "react-router-dom";
 
 export default function TopBar() {
-  // لتحديد ما إذا كانت قائمة اللغة مفتوحة
   const [langOpen, setLangOpen] = useState(false);
-  //   تحديد ما إذا كانت قائمة العملات مفتوحة
   const [currencyOpen, setCurrencyOpen] = useState(false);
-
-  //   لاستخدامها لاحقًا في معرفة هل تم الضغط خارج العنصر لإغلاق القائمة.
   const langRef = useRef(null);
   const currencyRef = useRef(null);
 
-  // إغلاق عند النقر خارج القائمة
-  /* 
-عند الضغط خارج قائمة اللغة أو العملة يتم إغلاقها.
-
-يستخدم useRef لتحديد ما إذا كان الضغط خارج العنصر
-*/
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (langRef.current && !langRef.current.contains(event.target)) {
@@ -32,10 +22,10 @@ export default function TopBar() {
   }, []);
 
   return (
-    <div className="border-b border-[#E3E4E6] text-[#3E445A] flex flex-col md:flex-row items-center justify-between gap-2 md:h-[39px] py-4 ">
-      <div className="container mx-auto px-4 h-full text-xs flex flex-col md:flex-row justify-between items-center gap-2">
-        {/* Left Side */}
-        <div className="flex flex-wrap justify-center md:justify-start gap-3">
+    <div className="border-b border-[#E3E4E6] text-[#3E445A] py-3">
+      <div className="container mx-auto px-4 text-xs flex flex-col lg:flex-row lg:justify-between gap-3 text-center">
+        {/* القسم الأول: الروابط */}
+        <div className="flex flex-row justify-center items-center gap-3">
           <Link to="/about" className="hover:text-[#35AFA0]">
             About Us
           </Link>
@@ -47,28 +37,32 @@ export default function TopBar() {
           </Link>
         </div>
 
-        {/* Right Side */}
-        <div className="flex flex-wrap justify-center md:justify-end gap-3 text-center md:text-right">
-          <p className="flex items-center">
-            <img src={ico} alt="" className="mr-1" />
-            100% Secure delivery without contacting the courier
-          </p>
-          <p className="block  border-l border-[#EDEEF5] pl-3">
-            Need help? Call Us:
-            <span className="font-semibold text-[#35AFA0]">+0020 500</span>
+        {/* القسم الثاني: المعلومات */}
+        <div className="flex flex-row justify-center items-center flex-wrap gap-3 text-center">
+          <p className="flex items-center gap-1">
+            <img src={ico} alt="icon" className="w-4 h-4" />
+            <span className="text-[11px] md:text-xs">
+              100% Secure delivery without contacting the courier
+            </span>
           </p>
 
-          <div className="flex items-center gap-2 border-l border-[#EDEEF5] pl-3 ">
-            {/* Language Dropdown */}
+          <p className="border-l pl-3 border-[#EDEEF5] text-[11px] md:text-xs">
+            Need help? Call Us:
+            <span className="font-semibold text-[#35AFA0] ml-1">+0020 500</span>
+          </p>
+
+          {/* Dropdowns */}
+          <div className="flex items-center gap-2 border-l pl-3 border-[#EDEEF5] text-[11px] md:text-xs">
+            {/* Language */}
             <div className="relative" ref={langRef}>
               <button
-                className="hover:text-[#35AFA0] "
+                className="hover:text-[#35AFA0]"
                 onClick={() => setLangOpen(!langOpen)}
               >
                 English ▾
               </button>
               {langOpen && (
-                <ul className="absolute bg-white shadow-lg border border-[#E4E5EE] rounded mt-1 w-28 z-10 text-[#3E445A]">
+                <ul className="absolute bg-white shadow-lg border border-[#E4E5EE] rounded mt-1 w-28 z-10 text-[#3E445A] text-sm">
                   <li className="px-3 py-1 hover:bg-gray-100 cursor-pointer">
                     English
                   </li>
@@ -82,16 +76,16 @@ export default function TopBar() {
               )}
             </div>
 
-            {/* Currency Dropdown */}
+            {/* Currency */}
             <div className="relative" ref={currencyRef}>
               <button
-                className="hover:text-[#35AFA0] "
+                className="hover:text-[#35AFA0]"
                 onClick={() => setCurrencyOpen(!currencyOpen)}
               >
                 USD ▾
               </button>
               {currencyOpen && (
-                <ul className="absolute bg-white shadow-lg border border-[#E4E5EE] rounded mt-1 w-20 z-10 text-[#3E445A]">
+                <ul className="absolute bg-white shadow-lg border border-[#E4E5EE] rounded mt-1 w-20 z-10 text-[#3E445A] text-sm">
                   <li className="px-3 py-1 hover:bg-gray-100 cursor-pointer">
                     USD
                   </li>

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useUser } from "../../hooks/useUser";
 
 export default function Login() {
+  const { login } = useUser(); // من الكونتكست
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -25,12 +26,7 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/login", formData);
-
-      console.log("Login success:", response.data);
-
-      // حفظ التوكن في localStorage
-      localStorage.setItem("token", response.data.accessToken);
+      await login(formData);
 
       navigate("/"); // إعادة التوجيه للصفحة الرئيسية
     } catch (error) {
@@ -41,7 +37,6 @@ export default function Login() {
     }
   };
 
-  
   return (
     <div className="p-10 flex items-center justify-center bg-gray-100 ">
       <div className="w-full max-w-md bg-white shadow-md p-8">

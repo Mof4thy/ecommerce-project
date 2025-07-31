@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useUser } from "../../hooks/useUser"
 import Loading from "../Loading";
 
 export default function Register() {
+   const { register } = useUser(); // من الكونتكست
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -27,8 +28,8 @@ export default function Register() {
 
     try {
       // مثال على API وهمي يمكنك تغييره لباك اند حقيقي
-      const response = await axios.post("http://localhost:5000/api/auth/register", formData);
-      console.log("Registration success:", response.data);
+      await register(formData);
+    
       navigate("/login");
     } catch (error) {
       console.error("Registration error:", error);

@@ -28,8 +28,11 @@ import {
 
 import logo from "../../assets/Link - Bacola Store.jpg";
 import { Link, useNavigate, NavLink } from "react-router-dom";
+import { useUser } from "../../hooks/useUser";
 
 export default function Navbar() {
+  const { user, isLoading } = useUser();
+
   const [openuser, setOpenUSer] = useState(false);
   const [openCart, setOpenCart] = useState(false);
   const [open, setOpen] = useState(false);
@@ -102,202 +105,18 @@ export default function Navbar() {
   return (
     <>
       {/* Start Header-search */}
-      <div className="container mx-auto p-4 ">
-        {/* DESKTOP Layout */}
-        <div className="hidden md:flex flex-wrap items-center justify-between">
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-wrap md:flex-nowrap items-center justify-between py-4 gap-4">
           {/* Logo */}
-          <Link to="/" className="flex items-center h-14 mr-20">
+          <Link to="/" className="flex items-center h-12 shrink-0">
             <img src={logo} alt="Logo" className="h-full w-auto" />
           </Link>
 
           {/* Search Bar */}
-          <div className="flex-1 mx-4 bg-[#F3F4F7] rounded-lg flex items-center px-3">
+          <div className="flex-1 min-w-0 bg-[#F3F4F7] rounded-lg flex items-center px-3">
             <input
               type="text"
               placeholder="Search for Products, fruit, meat, eggs .etc..."
-              className="w-full pr-3 h-12 bg-transparent border-none focus:outline-none"
-            />
-            <button>
-              <FontAwesomeIcon
-                icon={faMagnifyingGlass}
-                className="text-gray-600 text-lg"
-              />
-            </button>
-          </div>
-
-          {/* Icons */}
-          <div className="relative mr-4" ref={menuRef}>
-            {isAuthenticated ? (
-              <>
-                <button
-                  onClick={() => setOpenUSer(!openuser)}
-                  className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100 cursor-pointer"
-                >
-                  <FontAwesomeIcon
-                    icon={faUser}
-                    className="text-gray-600 text-xl"
-                  />
-                </button>
-
-                {openuser && (
-                  <div className="absolute right-0 mt-2 w-35 bg-white border border-gray-400 z-100">
-                    <div className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2 border-b border-gray-300">
-                      <HiMiniUserCircle size={20} />
-                      name
-                    </div>
-                    <Link
-                      to="/profile"
-                      onMouseDown={(e) => {
-                        e.stopPropagation(); // يمنع غلق القائمة قبل تنفيذ التنقل
-                      }}
-                      onClick={() => setOpenUSer(false)}
-                      className="px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-                    >
-                      <LuUserRound size={20} />
-                      Profile
-                    </Link>
-                    <button
-                      onMouseDown={(e) => e.stopPropagation()}
-                      onClick={() => {
-                        setOpenUSer(false);
-                        handleLogout();
-                      }}
-                      className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-                    >
-                      <TbLogout size={20} />
-                      Logout
-                    </button>
-                  </div>
-                )}
-              </>
-            ) : (
-              <Link
-                to="/login"
-                className="px-4 py-2 rounded-md bg-[#35AFA0] text-white font-semibold hover:bg-[#2e9c90] transition duration-200"
-              >
-                Sign In
-              </Link>
-            )}
-          </div>
-
-          {/* Cart Icon with Dropdown */}
-          <div
-            className="flex items-center relative"
-            ref={cartRef}
-            onClick={() => setOpenCart(!openCart)}
-          >
-            <div className="hidden sm:block mr-2 cursor-pointer">
-              ${subtotal.toFixed(2)}
-            </div>
-            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-[#FFF1EE] cursor-pointer relative">
-              <FontAwesomeIcon
-                icon={faBasketShopping}
-                className="text-[#EA2B0F] text-xl"
-              />
-              <span className="absolute -top-2 -right-2 bg-[#EA2B0F] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                {cartItems.length}
-              </span>
-            </div>
-
-            {openCart && (
-              <div className="absolute right-0 top-14 w-80 bg-white border border-gray-300 z-50 shadow-lg p-3">
-                {cartItems.length === 0 ? (
-                  <div className="text-center p-5">
-                    <img
-                      src={logo}
-                      alt=""
-                      className="w-12 h-12 mx-auto object-cover"
-                    />
-                    <p className="text-gray-500 text-center py-4">
-                      No products in the cart.
-                    </p>
-                  </div>
-                ) : (
-                  <>
-                    <ul className="divide-y divide-gray-100 max-h-64 overflow-y-auto">
-                      {cartItems.map((item) => (
-                        <li
-                          key={item.id}
-                          className="flex gap-3 py-2 items-center"
-                        >
-                          <img
-                            src={item.image}
-                            alt={item.name}
-                            className="w-12 h-12 mr-2 object-cover"
-                          />
-                          <div className="flex-1">
-                            <p className="text-sm">{item.name}</p>
-                            <p className="text-xs text-gray-600">
-                              {item.qty} ×{" "}
-                              <span className="text-[#EA2B0F]">
-                                ${item.price.toFixed(2)}
-                              </span>
-                            </p>
-                          </div>
-                          <p className="text-sm font-normal">
-                            ${(item.qty * item.price).toFixed(2)}
-                          </p>
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="mt-3 border-t border-gray-400 ">
-                      <p className="text-sm flex justify-between py-5">
-                        <span className="text-[13px] text-[#71778E] font-normal">
-                          Subtotal:
-                        </span>
-                        <span className="text-[#EA2B0F] text-base">
-                          ${subtotal.toFixed(2)}
-                        </span>
-                      </p>
-                      <div className="flex flex-col gap-2">
-                        <Link
-                          to="/cart"
-                          onMouseDown={(e) => e.stopPropagation()}
-                          onClick={() => setOpenCart(false)}
-                          className="w-full bg-gray-100 hover:bg-gray-200 text-sm text-center py-2"
-                        >
-                          View Cart
-                        </Link>
-                        <Link
-                          to="/checkout"
-                          onMouseDown={(e) => e.stopPropagation()}
-                          onClick={() => setOpenCart(false)}
-                          className="w-full bg-[#EA2B0F]  hover:bg-[#f75c3c] text-white text-sm text-center py-2"
-                        >
-                          Checkout
-                        </Link>
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* MOBILE Layout */}
-      <div className="md:hidden flex flex-col gap-2">
-        {/* Logo */}
-        <Link to="/" className="flex justify-center items-center mb-2">
-          <img src={logo} alt="Logo" className="h-10 w-auto" />
-        </Link>
-
-        {/* Menu + Search + Icons */}
-        <div className="flex items-center justify-between gap-2 px-4">
-          {/* Mobile Menu Button */}
-          <button
-            className="text-2xl"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <FaTimes /> : <FaBars />}
-          </button>
-
-          {/* Search */}
-          <div className="flex-1 bg-[#F3F4F7] rounded-lg flex items-center px-3">
-            <input
-              type="text"
-              placeholder="Search..."
               className="w-full h-10 bg-transparent border-none focus:outline-none text-sm"
             />
             <button>
@@ -308,223 +127,228 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* User Menu */}
-          {/* Icons */}
-          <div className="relative " ref={menuRef}>
-            {isAuthenticated ? (
-              <>
-                <button
-                  onClick={() => setOpenUSer(!openuser)}
-                  className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100"
-                >
-                  <FontAwesomeIcon
-                    icon={faUser}
-                    className="text-gray-600 text-xl"
-                  />
-                </button>
-
-                {openuser && (
-                  <div className="absolute right-0 mt-2 w-35 bg-white border border-gray-400 z-100">
-                    <div className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2 border-b border-gray-300">
-                      <HiMiniUserCircle size={20} />
-                      name
-                    </div>
-                    <div
-                      to="/profile"
-                      onMouseDown={(e) => {
-                        e.stopPropagation(); // يمنع غلق القائمة قبل تنفيذ التنقل
-                      }}
-                      onClick={() => setOpenUSer(false)}
-                      className="px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-                    >
-                      <LuUserRound size={20} />
-                      Profile
-                    </div>
-                    <button
-                      onClick={() => {
-                        setOpenUSer(false);
-                        handleLogout();
-                      }}
-                      className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-                    >
-                      <TbLogout size={20} />
-                      Logout
-                    </button>
-                  </div>
-                )}
-              </>
-            ) : (
-              <Link
-                to="/login"
-                className="px-4 py-2 rounded-md bg-[#35AFA0] text-white font-semibold hover:bg-[#2e9c90] transition duration-200"
-              >
-                Sign In
-              </Link>
-            )}
-          </div>
-
-          {/* Cart */}
-          <div
-            className="flex items-center relative"
-            ref={cartRef}
-            onClick={() => setOpenCart(!openCart)}
-          >
-            <div className="hidden sm:block mr-2 cursor-pointer">
-              ${subtotal.toFixed(2)}
-            </div>
-            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-[#FFF1EE] cursor-pointer relative">
-              <FontAwesomeIcon
-                icon={faBasketShopping}
-                className="text-[#EA2B0F] text-xl"
-              />
-              <span className="absolute -top-2 -right-2 bg-[#EA2B0F] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                {cartItems.length}
-              </span>
-            </div>
-
-            {openCart && (
-              <div className="absolute right-0 top-14 w-80 bg-white border border-gray-300 z-50 shadow-lg p-3">
-                {cartItems.length === 0 ? (
-                  <div className="text-center p-5">
-                    <img
-                      src={logo}
-                      alt=""
-                      className="w-12 h-12 mx-auto object-cover"
+          {/* User + Cart */}
+          <div className="flex items-center gap-3">
+            <div className="relative" ref={menuRef}>
+              {isAuthenticated ? (
+                <>
+                  <button
+                    onClick={() => setOpenUSer(!openuser)}
+                    className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100"
+                  >
+                    <FontAwesomeIcon
+                      icon={faUser}
+                      className="text-gray-600 text-xl"
                     />
-                    <p className="text-gray-500 text-center py-4">
-                      No products in the cart.
-                    </p>
-                  </div>
-                ) : (
-                  <>
-                    <ul className="divide-y divide-gray-100 max-h-64 overflow-y-auto">
-                      {cartItems.map((item) => (
-                        <li
-                          key={item.id}
-                          className="flex gap-3 py-2 items-center"
-                        >
-                          <img
-                            src={item.image}
-                            alt={item.name}
-                            className="w-12 h-12 mr-2 object-cover"
-                          />
-                          <div className="flex-1">
-                            <p className="text-sm">{item.name}</p>
-                            <p className="text-xs text-gray-600">
-                              {item.qty} ×{" "}
-                              <span className="text-[#EA2B0F]">
-                                ${item.price.toFixed(2)}
-                              </span>
-                            </p>
-                          </div>
-                          <p className="text-sm font-normal">
-                            ${(item.qty * item.price).toFixed(2)}
-                          </p>
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="mt-3 border-t border-gray-400 ">
-                      <p className="text-sm flex justify-between py-5">
-                        <span className="text-[13px] text-[#71778E] font-normal">
-                          Subtotal:
-                        </span>
-                        <span className="text-[#EA2B0F] text-base">
-                          ${subtotal.toFixed(2)}
-                        </span>
-                      </p>
-                      <div className="flex flex-col gap-2">
-                        <Link
-                          to="/cart"
-                          onMouseDown={(e) => e.stopPropagation()}
-                          onClick={() => setOpenCart(false)}
-                          className="w-full bg-gray-100 hover:bg-gray-200 text-sm text-center py-2"
-                        >
-                          View Cart
-                        </Link>
-                        <Link
-                          to="/checkout"
-                          onMouseDown={(e) => e.stopPropagation()}
-                          onClick={() => setOpenCart(false)}
-                          className="w-full bg-[#EA2B0F]  hover:bg-[#f75c3c] text-white text-sm text-center py-2"
-                        >
-                          Checkout
-                        </Link>
-                      </div>
+                  </button>
+
+                  {openuser && (
+                    <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-400 z-50">
+                      {!isLoading && user && (
+                        <div className="w-full px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2 border-b border-gray-200">
+                          <HiMiniUserCircle size={20} />
+                          {user.name}
+                        </div>
+                      )}
+                      <Link
+                        to="/profile"
+                        onClick={() => setOpenUSer(false)}
+                        className=" px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                      >
+                        <LuUserRound size={20} /> Profile
+                      </Link>
+                      <button
+                        onClick={() => {
+                          setOpenUSer(false);
+                          handleLogout();
+                        }}
+                        className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                      >
+                        <TbLogout size={20} /> Logout
+                      </button>
                     </div>
-                  </>
-                )}
+                  )}
+                </>
+              ) : (
+                <Link
+                  to="/login"
+                  className="px-4 py-2 rounded-md bg-[#35AFA0] text-white font-semibold hover:bg-[#2e9c90]"
+                >
+                  Sign In
+                </Link>
+              )}
+            </div>
+
+            {/* Cart */}
+            <div
+              className="relative flex items-center"
+              ref={cartRef}
+              onClick={() => setOpenCart(!openCart)}
+            >
+              <p className="mr-4 cursor-pointer"> ${subtotal.toFixed(2)}</p>
+              <div className="w-10 h-10 flex items-center justify-center rounded-full bg-[#FFF1EE] cursor-pointer relative">
+                <FontAwesomeIcon
+                  icon={faBasketShopping}
+                  className="text-[#EA2B0F] text-xl"
+                />
+                <span className="absolute -top-2 -right-2 bg-[#EA2B0F] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                  {cartItems.length}
+                </span>
               </div>
-            )}
+              {openCart && (
+                <div className="absolute right-0 top-14 w-[90vw] sm:w-80 bg-white border border-gray-300 z-50 shadow-lg p-3">
+                  {cartItems.length === 0 ? (
+                    <div className="text-center p-5">
+                      <img
+                        src={logo}
+                        alt=""
+                        className="w-12 h-12 mx-auto object-cover"
+                      />
+                      <p className="text-gray-500 py-4">
+                        No products in the cart.
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <ul className="divide-y divide-gray-100 max-h-64 overflow-y-auto">
+                        {cartItems.map((item) => (
+                          <li
+                            key={item.id}
+                            className="flex gap-3 py-2 items-center"
+                          >
+                            <img
+                              src={item.image}
+                              alt={item.name}
+                              className="w-12 h-12 object-cover"
+                            />
+                            <div className="flex-1">
+                              <p className="text-sm">{item.name}</p>
+                              <p className="text-xs text-gray-600">
+                                {item.qty} ×{" "}
+                                <span className="text-[#EA2B0F]">
+                                  ${item.price.toFixed(2)}
+                                </span>
+                              </p>
+                            </div>
+                            <p className="text-sm">
+                              ${(item.qty * item.price).toFixed(2)}
+                            </p>
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="mt-3 border-t border-gray-400 pt-3">
+                        <p className="text-sm flex justify-between">
+                          <span className="text-[#71778E]">Subtotal:</span>
+                          <span className="text-[#EA2B0F] font-semibold">
+                            ${subtotal.toFixed(2)}
+                          </span>
+                        </p>
+                        <div className="flex flex-col gap-2 mt-3">
+                          <Link
+                            to="/cart"
+                            onClick={() => setOpenCart(false)}
+                            className="w-full bg-gray-100 hover:bg-gray-200 text-sm text-center py-2"
+                          >
+                            View Cart
+                          </Link>
+                          <Link
+                            to="/checkout"
+                            onClick={() => setOpenCart(false)}
+                            className="w-full bg-[#EA2B0F] hover:bg-[#f75c3c] text-white text-sm text-center py-2"
+                          >
+                            Checkout
+                          </Link>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
       {/* End Header-search */}
 
-      {/* start Route-link */}
       <nav className="bg-white shadow-sm px-4">
         <div className="container mx-auto py-3 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          {/* ALL CATEGORIES */}
-          <div className="relative">
-            <button
-              onClick={() => setOpen(!open)}
-              className="flex items-center gap-2 bg-[#35AFA0] text-white font-semibold p-3 rounded-full text-sm w-full md:w-auto"
-            >
-              <IoIosMenu size={20} />
-              <span className="flex-1 text-center">ALL CATEGORIES</span>
-              <FaChevronDown
-                className={`transition-transform duration-200 ${
-                  open ? "rotate-180" : ""
-                }`}
-              />
-            </button>
+          {/* Line with Categories & Hamburger */}
+          <div className="flex items-center justify-between md:justify-start md:gap-6 w-full md:w-auto">
+            {/* ALL CATEGORIES */}
+            <div className="relative w-full md:w-auto">
+              <button
+                onClick={() => setOpen(!open)}
+                className="flex items-center gap-2 bg-[#35AFA0] text-white font-semibold px-4 py-3 rounded-full text-sm md:text-base w-full md:w-auto"
+              >
+                <IoIosMenu size={20} />
+                <span className="flex-1 text-center whitespace-nowrap">
+                  ALL CATEGORIES
+                </span>
+                <FaChevronDown
+                  className={`transition-transform duration-200 ${
+                    open ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
 
-            {/* Dropdown */}
-            {open && (
-              <ul className="absolute z-10 mt-10 pt-5 w-64 bg-white shadow-lg border border-gray-200">
-                {categories.map((cat, index) => (
-                  <li
-                    key={index}
-                    className="flex items-center gap-2 px-4 py-2 text-[13px] text-[#3E445A] hover:bg-[#F0FAFF] hover:text-[#35AFA0] cursor-pointer"
-                  >
-                    <span className="text-xl text-[#3E445A] opacity-50 ">
-                      {cat.icon}
-                    </span>
-                    <span>{cat.name}</span>
-                  </li>
-                ))}
-
-                {/* الخط الفاصل */}
-                <hr className="my-2 border-gray-200" />
-
-                {/* العناصر الثلاثة الأخيرة بدون أيقونات */}
-
-                {["Value of the Day", "Top 100 Offers", "New Arrivals"].map(
-                  (label, index) => (
+              {/* Dropdown */}
+              {open && (
+                <ul className="absolute z-10 mt-10 pt-5 w-64 bg-white shadow-lg border border-gray-200">
+                  {categories.map((cat, index) => (
                     <li
                       key={index}
                       className="flex items-center gap-2 px-4 py-2 text-[13px] text-[#3E445A] hover:bg-[#F0FAFF] hover:text-[#35AFA0] cursor-pointer"
                     >
-                      {label}
+                      <span className="text-xl text-[#3E445A] opacity-50">
+                        {cat.icon}
+                      </span>
+                      <span>{cat.name}</span>
                     </li>
-                  )
-                )}
-              </ul>
-            )}
+                  ))}
+                  <hr className="my-2 border-gray-200" />
+                  {["Value of the Day", "Top 100 Offers", "New Arrivals"].map(
+                    (label, index) => (
+                      <li
+                        key={index}
+                        className="flex items-center gap-2 px-4 py-2 text-[13px] text-[#3E445A] hover:bg-[#F0FAFF] hover:text-[#35AFA0] cursor-pointer"
+                      >
+                        {label}
+                      </li>
+                    )
+                  )}
+                </ul>
+              )}
+            </div>
+
+            {/* Hamburger (mobile only) */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="text-[#35AFA0] text-2xl p-2 focus:outline-none"
+              >
+                {mobileMenuOpen ? <FaTimes /> : <FaBars />}
+              </button>
+            </div>
           </div>
 
           {/* Navigation Links */}
           <ul
             className={`${
               mobileMenuOpen ? "flex" : "hidden"
-            } md:flex flex-col md:flex-row items-start md:items-center gap-4 text-[15px] font-semibold text-[#3E445A] w-full md:w-auto`}
+            } md:flex md:flex-wrap flex-col md:flex-row items-start md:items-center gap-2 md:gap-3 md:ml-[70px] text-[15px] font-semibold text-[#3E445A] 
+  ${
+    mobileMenuOpen
+      ? "w-full left-0 right-0 top-full bg-white shadow-md border-t border-gray-200 z-20 px-4 py-2"
+      : ""
+  } md:static md:bg-transparent md:shadow-none md:border-none`}
           >
             <li>
               <NavLink
                 to="/"
                 className={({ isActive }) =>
                   isActive
-                    ? "bg-[#F0FAFF] text-[#35AFA0] p-2 rounded-full"
-                    : "p-2 rounded-full hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
+                    ? "block w-full bg-[#F0FAFF] text-[#35AFA0] p-2 rounded-md"
+                    : "block w-full p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
                 }
               >
                 HOME
@@ -533,10 +357,10 @@ export default function Navbar() {
             <li>
               <NavLink
                 to="/shop"
-                  className={({ isActive }) =>
+                className={({ isActive }) =>
                   isActive
-                    ? "bg-[#F0FAFF] text-[#35AFA0] p-2 rounded-full"
-                    : "p-2 rounded-full hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
+                    ? "block w-full bg-[#F0FAFF] text-[#35AFA0] p-2 rounded-md"
+                    : "block w-full p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
                 }
               >
                 SHOP
@@ -545,12 +369,11 @@ export default function Navbar() {
             <li>
               <NavLink
                 to="/Meats&Seafood"
-                className={({isActive})=>
-                isActive
-                ? "flex items-center gap-2 p-2 rounded-full bg-[#F0FAFF] text-[#35AFA0]"
-                :"flex items-center gap-2 p-2 rounded-full hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
+                className={({ isActive }) =>
+                  isActive
+                    ? "flex items-center gap-2 p-2 rounded-md bg-[#F0FAFF] text-[#35AFA0]"
+                    : "flex items-center gap-2 p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
                 }
-                // className="flex items-center gap-2 p-2 rounded-full hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
               >
                 <TbMeat size={20} /> Meats & Seafood
               </NavLink>
@@ -558,10 +381,10 @@ export default function Navbar() {
             <li>
               <NavLink
                 to="/bekery"
-                 className={({isActive})=>
-                isActive
-                ? "flex items-center gap-2 p-2 rounded-full bg-[#F0FAFF] text-[#35AFA0]"
-                :"flex items-center gap-2 p-2 rounded-full hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
+                className={({ isActive }) =>
+                  isActive
+                    ? "flex items-center gap-2 p-2 rounded-md bg-[#F0FAFF] text-[#35AFA0]"
+                    : "flex items-center gap-2 p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
                 }
               >
                 <MdOutlineBakeryDining size={20} /> Bakery
@@ -570,10 +393,10 @@ export default function Navbar() {
             <li>
               <NavLink
                 to="/beverages"
-                 className={({isActive})=>
-                isActive
-                ? "flex items-center gap-2 p-2 rounded-full bg-[#F0FAFF] text-[#35AFA0]"
-                :"flex items-center gap-2 p-2 rounded-full hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
+                className={({ isActive }) =>
+                  isActive
+                    ? "flex items-center gap-2 p-2 rounded-md bg-[#F0FAFF] text-[#35AFA0]"
+                    : "flex items-center gap-2 p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
                 }
               >
                 <FiCoffee size={20} /> Beverages
@@ -584,8 +407,8 @@ export default function Navbar() {
                 to="/blog"
                 className={({ isActive }) =>
                   isActive
-                    ? "bg-[#F0FAFF] text-[#35AFA0] p-2 rounded-full"
-                    : "p-2 rounded-full hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
+                    ? "block w-full bg-[#F0FAFF] text-[#35AFA0] p-2 rounded-md"
+                    : "block w-full p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
                 }
               >
                 Blog
@@ -594,10 +417,10 @@ export default function Navbar() {
             <li>
               <NavLink
                 to="/contact"
-                 className={({ isActive }) =>
+                className={({ isActive }) =>
                   isActive
-                    ? "bg-[#F0FAFF] text-[#35AFA0] p-2 rounded-full"
-                    : "p-2 rounded-full hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
+                    ? "block w-full bg-[#F0FAFF] text-[#35AFA0] p-2 rounded-md"
+                    : "block w-full p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
                 }
               >
                 Contact
@@ -606,7 +429,6 @@ export default function Navbar() {
           </ul>
         </div>
       </nav>
-      {/* end Route-link */}
     </>
   );
 }

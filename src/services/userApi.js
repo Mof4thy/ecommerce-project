@@ -1,4 +1,4 @@
-import api from "./api";
+import api from "./Api";
 
 
 const registerUser = async (userData) =>{
@@ -31,7 +31,9 @@ const getUserProfile = async (token) =>{
                 Authorization: `Bearer ${token}`,
             }
         });
-        return response.data;
+        // console.log("getUserProfile response:", response.data.user);
+
+        return response.data.user;
     }
     catch(error){
         console.log(error);
