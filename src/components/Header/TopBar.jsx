@@ -36,10 +36,10 @@ export default function TopBar() {
       <div className="container mx-auto px-4 h-full text-xs flex flex-col md:flex-row justify-between items-center gap-2">
         {/* Left Side */}
         <div className="flex flex-wrap justify-center md:justify-start gap-3">
-          <a href="#" className="hover:text-[#35AFA0]">
+          <Link to="/about" className="hover:text-[#35AFA0]">
             About Us
-          </a>
-          <a href="#" className="hover:text-[#35AFA0]">
+          </Link>
+          <a href="/compare" className="hover:text-[#35AFA0]">
             Compare
           </a>
           <Link to="/wishlist" className="hover:text-[#35AFA0]">

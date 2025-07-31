@@ -6,7 +6,7 @@ export default function Login() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    username: "",
+    email: "",
     password: "",
   });
 
@@ -25,10 +25,7 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      const response = await axios.post("https://dummyjson.com/auth/login", {
-        username: 'emilys',
-        password: 'emilyspass',
-      });
+      const response = await axios.post("http://localhost:5000/api/auth/login", formData);
 
       console.log("Login success:", response.data);
 
@@ -54,17 +51,17 @@ export default function Login() {
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
             <label
-              htmlFor="username"
+              htmlFor="email"
               className="block text-sm font-medium text-gray-600"
             >
-              Username
+              email
             </label>
             <input
-              type="text"
-              id="username"
-              name="username"
+              type="email"
+              id="email"
+              name="email"
               className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#35AFA0]"
-              value={formData.username}
+              value={formData.email}
               onChange={handleChange}
               required
             />

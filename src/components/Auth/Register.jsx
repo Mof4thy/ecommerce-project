@@ -7,10 +7,9 @@ export default function Register() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
-    username: "",
+    name: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
 
   const handleChange = (e) => {
@@ -23,19 +22,12 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
-      return;
-    }
-
+   
     setIsLoading(true);
 
     try {
       // مثال على API وهمي يمكنك تغييره لباك اند حقيقي
-      const response = await axios.post("https://reqres.in/api/register", {
-        email: formData.email,
-        password: formData.password,
-      });
+      const response = await axios.post("http://localhost:5000/api/auth/register", formData);
       console.log("Registration success:", response.data);
       navigate("/login");
     } catch (error) {
@@ -57,17 +49,17 @@ export default function Register() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label
-                htmlFor="username"
+                htmlFor="name"
                 className="block text-sm font-medium text-gray-700"
               >
                 Full Name
               </label>
               <input
-                id="username"
-                name="username"
+                id="name"
+                name="name"
                 type="text"
                 required
-                value={formData.username}
+                value={formData.name}
                 onChange={handleChange}
                 className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#35AFA0]"
               />
@@ -109,23 +101,7 @@ export default function Register() {
               />
             </div>
 
-            <div>
-              <label
-                htmlFor="confirmPassword"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Confirm Password
-              </label>
-              <input
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                required
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#35AFA0]"
-              />
-            </div>
+          
 
             <button
               type="submit"

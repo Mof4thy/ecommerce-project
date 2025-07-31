@@ -285,9 +285,9 @@ const Home = () => {
   </button>
 
   <div className="flex overflow-x-auto no-scrollbar space-x-4 sm:space-x-6">
-    {visibleProducts.map(product => (
-      <div className="min-w-[200px] sm:min-w-[250px]">
-        <ProductCard key={product.id} product={product} />
+    {visibleProducts.map((product) => (
+      <div key={product.id} className="min-w-[200px] sm:min-w-[250px]">
+        <ProductCard  product={product} />
       </div>
     ))}
   </div>
@@ -300,7 +300,7 @@ const Home = () => {
         {/* Fifth Section */}
 <p className="text-lg mt-12 bg-orange-200 text-center px-4">
   SUPER DISCOUNT FOR YOUR{' '}
-  <h4 className="inline font-bold"> FIRST PURCHASE</h4>
+  <span className="inline font-bold"> FIRST PURCHASE</span>
 </p>
 
 <div className="mt-12 px-4">
