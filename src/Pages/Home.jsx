@@ -1,6 +1,3 @@
-
-
-
 import { useState, useEffect } from "react";
 import img1 from "../images/image1.png";
 import img2 from "../images/image2.png";
@@ -158,7 +155,6 @@ const Home = () => {
       </button>
     </div>
 
-    {/* أزرار التنقل */}
     <button
       onClick={prevSlide}
       className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white bg-opacity-75 px-3 py-1 rounded-full shadow sm:text-sm"
@@ -230,7 +226,7 @@ const Home = () => {
     </div>
 
     {/* Cards Grid */}
-    <div className="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-3 gap-4 flex-1">
+    <div className="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-3 gap-4 flex-1 hover:cursor-pointer">
       <Card2 title="All Natural Italian-Style Chicken Meatballs" priceOld="$9.35" priceNew="$7.25" discount="22" imageSrc={Italian} />
       <Card2 title="Angies's Boomchickapop Sweet & Salty Kettle Corn" priceOld="$4.29" priceNew="$3.29" discount={23} imageSrc={boom} />
       <Card2 title="Field Roast Chao Cheese Creamy Original" priceOld="$24.00" priceNew="$19.50" discount={19} imageSrc={chao} />
