@@ -65,7 +65,7 @@ export const CartProvider = ({ children }) => {
                 }
             }
             const response = await CartApi.updateCart(productId, quantity, token);
-            setCart(response.cart );
+            setCart(response.cart);
         }
         catch(error){
             setError(error);
