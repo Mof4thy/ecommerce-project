@@ -3,6 +3,7 @@ import CartApi from "../services/CartApi";
 import { useUser } from "../hooks/useUser";
 
 export const CartContext = createContext();
+export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState([]);
