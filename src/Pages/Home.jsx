@@ -1,6 +1,3 @@
-
-
-
 import { useState, useEffect } from "react";
 import img1 from "../images/image1.png";
 import img2 from "../images/image2.png";
@@ -30,6 +27,7 @@ import bottle from "../images/bottle.png";
 import milk from "../images/milk.png";
 import iceCream from "../images/iceCream.png";
 import { FaStar, FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const images = [img1, img2, img3];
 
@@ -127,6 +125,7 @@ const Home = () => {
     if (productIndex - 5 >= 0) setProductIndex(productIndex - 5);
   };
 
+  const navigate = useNavigate();
   return (
     // Main Home Component
 <div className="home flex flex-col items-center justify-center bg-gray-100">
@@ -149,12 +148,13 @@ const Home = () => {
       <p className="inline mt-5 text-gray-700 text-sm sm:text-xs">From</p>
       <h1 className="inline text-red-600 text-4xl sm:text-2xl font-bold ml-2">$7.99</h1>
       <br />
-      <button className="bg-emerald-600 text-white px-4 py-2 rounded-full mt-4 w-40 cursor-pointer hover:bg-green-600 transition text-sm sm:text-xs">
+      <button
+      onClick={() => navigate('/shop')}
+       className="bg-emerald-600 text-white px-4 py-2 rounded-full mt-4 w-40 cursor-pointer hover:bg-green-600 transition text-sm sm:text-xs">
         Shop Now
       </button>
     </div>
 
-    {/* أزرار التنقل */}
     <button
       onClick={prevSlide}
       className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white bg-opacity-75 px-3 py-1 rounded-full shadow sm:text-sm"
@@ -226,7 +226,7 @@ const Home = () => {
     </div>
 
     {/* Cards Grid */}
-    <div className="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-3 gap-4 flex-1">
+    <div className="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-3 gap-4 flex-1 hover:cursor-pointer">
       <Card2 title="All Natural Italian-Style Chicken Meatballs" priceOld="$9.35" priceNew="$7.25" discount="22" imageSrc={Italian} />
       <Card2 title="Angies's Boomchickapop Sweet & Salty Kettle Corn" priceOld="$4.29" priceNew="$3.29" discount={23} imageSrc={boom} />
       <Card2 title="Field Roast Chao Cheese Creamy Original" priceOld="$24.00" priceNew="$19.50" discount={19} imageSrc={chao} />
@@ -250,7 +250,9 @@ const Home = () => {
       <div className="text-center px-2">
         <h3 className="text-xl font-bold text-black">Cookie and Ice Cream</h3>
         <p className="text-sm text-gray-800">Bacola Weekend Discount</p>
-        <button className="mt-2 cursor-pointer bg-amber-900 text-white px-4 py-1 rounded-full hover:bg-amber-700 transition">
+        <button 
+        onClick={() => navigate('/shop')}
+        className="mt-2 cursor-pointer bg-amber-900 text-white px-4 py-1 rounded-full hover:bg-amber-700 transition">
           Shop Now
         </button>
       </div>
@@ -267,7 +269,9 @@ const Home = () => {
       <div className="text-center px-2">
         <h3 className="text-xl font-bold text-black">Cookie and Ice Cream</h3>
         <p className="text-sm text-gray-800">Bacola Weekend Discount</p>
-        <button className="mt-2 cursor-pointer bg-pink-700 text-white px-4 py-1 rounded-full hover:bg-pink-500 transition">
+        <button
+        onClick={() => navigate('/shop')}
+         className="mt-2 cursor-pointer bg-pink-700 text-white px-4 py-1 rounded-full hover:bg-pink-500 transition">
           Shop Now
         </button>
       </div>
@@ -346,7 +350,9 @@ const Home = () => {
       <div className="text-center">
         <h3 className="text-xl font-bold text-white pb-2">Natural Eggs</h3>
         <p className="text-sm text-white pb-5">Eat one every day</p>
-        <button className="mt-2 bg-gray-300 text-black px-10 h-8 rounded-full hover:bg-gray-400 cursor-pointer transition">
+        <button
+        onClick={() => navigate('/shop')}
+         className="mt-2 bg-gray-300 text-black px-10 h-8 rounded-full hover:bg-gray-400 cursor-pointer transition">
           Shop Now
         </button>
       </div>
@@ -362,7 +368,9 @@ const Home = () => {
       <div className="text-center px-2">
         <h3 className="text-2xl font-bold">Taste the Best</h3>
         <p className="text-sm text-gray-500 mb-3">Shine the morning</p>
-        <button className="mt-2 w-40 bg-amber-600 text-white px-4 py-1 rounded-full hover:bg-amber-700 cursor-pointer transition">
+        <button
+        onClick={() => navigate('/shop')}
+         className="mt-2 w-40 bg-amber-600 text-white px-4 py-1 rounded-full hover:bg-amber-700 cursor-pointer transition">
           Shop Now
         </button>
       </div>
@@ -378,7 +386,9 @@ const Home = () => {
       <div className="text-center ">
         <h3 className="text-xl font-bold text-white">Cookie and Ice Cream</h3>
         <p className="text-sm text-gray-300">Bacola Weekend Discount</p>
-        <button className="mt-2 bg-gradient-to-b from-amber-600 to-white text-black px-4 py-1 rounded-full hover:bg-amber-500 cursor-pointer transition">
+        <button
+        onClick={() => navigate('/shop')}
+         className="mt-2 bg-gradient-to-b from-amber-600 to-white text-black px-4 py-1 rounded-full hover:bg-amber-500 cursor-pointer transition">
           Shop Now
         </button>
       </div>
