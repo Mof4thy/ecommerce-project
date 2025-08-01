@@ -13,8 +13,7 @@ import { TbLogout } from "react-icons/tb";
 import { HiMiniUserCircle } from "react-icons/hi2";
 import { UserContext } from "../../context/UserContext";
 import { MdDelete } from "react-icons/md";
-import { useUser } from "../../hooks/useUser";
-import { useCart } from "../../hooks/useCart";
+
 import {
   LuCoffee,
   LuCookie,
@@ -32,6 +31,8 @@ import {
 import logo from "../../assets/Link - Bacola Store.jpg";
 import emptyCart from "../../assets/empty-cart.png";
 import { Link, useNavigate, NavLink } from "react-router-dom";
+import { useUser } from "../../hooks/useUser";
+import { useCart } from "../../hooks/UseCart";
 
 export default function Navbar() {
   const { logout } = useContext(UserContext);
@@ -66,9 +67,6 @@ export default function Navbar() {
     { name: "New Arrivals", icon: <LuTruck /> },
   ];
 
- 
-
-
   // Sign In هل يوجد توكن لو موجود يبق كده ف حاله اللوجن لو مش موجود يبقي هيتغير الايقون لل
   const isAuthenticated = !!localStorage.getItem("token");
 
@@ -87,43 +85,49 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-
-  // [1]  بيانات الكارت متخزنه ف متغير 
-    const items = cart?.cart?.items ?? [];
-
-   // [2]  لحساب اجمالي السعر لكل البرودكت المضافه
- const subtotal = items.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
-
-
- // زيادة الكمية
-const increaseQty = (id) => {
-  const item = items.find((item) => item._id === id);
- 
+  // [1]  بيانات الكارت متخزنه ف متغير
+ const items = cart?.items ?? []
   
-  if (item) {
-    updateCart(item.product.id, item.quantity + 1);
+
+  // [2]  لحساب اجمالي السعر لكل البرودكت المضافه
+  const subtotal = items.reduce(
+    (acc, item) => acc + item.product.price * item.quantity,
+    0
+  );
+
+  // زيادة الكمية
+//  const increaseQty = (id) => {
+//   const item = items.find((item) => item._id  === id);
+
+//   if (item) {
+//     updateCart(item.product._id, item.quantity + 1);
+//   }
+// };
+
+//   // تقليل الكمية
+//  const decreaseQty = (id) => {
+//   const item = items.find((item) => item._id === id);
+
+//   if (item && item.quantity > 1) {
     
+//     updateCart(item.product._id, item.quantity - 1);
+//   }
+// };
+
+
+ const handleUpdateCart = (productId, operation) => {
+  if (productId) {
+    updateCart(productId, operation);
+  } else {
+    console.log("Please login to update cart");
   }
 };
 
-// تقليل الكمية
-const decreaseQty = (id) => {
-  const item = items.find((item) => item._id === id);
-  if (item && item.quantity > 1) {
-    updateCart(item.product.id, item.quantity - 1);
-  }
-};
-
-// حذف المنتج
-const removeItem = (id) => {
-   const item = items.find((item) => item._id === id);
-  removeFromCart(item.product.id);
-};
 
   return (
     <>
       {/* Start Header-search */}
-      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 ">
         <div className="flex flex-wrap md:flex-nowrap items-center justify-between py-4 gap-4">
           {/* Logo */}
           <Link to="/" className="flex items-center h-12 shrink-0">
@@ -152,7 +156,8 @@ const removeItem = (id) => {
                 <>
                   <button
                     onClick={() => setOpenUSer(!openuser)}
-                    className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100">
+                    className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100"
+                  >
                     <FontAwesomeIcon
                       icon={faUser}
                       className="text-gray-600 text-xl"
@@ -163,14 +168,15 @@ const removeItem = (id) => {
                     <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-400 z-50">
                       {!isLoading && user && (
                         <div className="w-full px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2 border-b border-gray-200">
-                          <HiMiniUserCircle size={20} />
-                          {user.name}
+                          <HiMiniUserCircle size={25} />
+                          <p className="text-[14px]">{user.name}</p>
                         </div>
                       )}
                       <Link
                         to="/profile"
                         onClick={() => setOpenUSer(false)}
-                        className=" px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2">
+                        className=" px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                      >
                         <LuUserRound size={20} /> Profile
                       </Link>
                       <button
@@ -178,7 +184,8 @@ const removeItem = (id) => {
                           setOpenUSer(false);
                           handleLogout();
                         }}
-                        className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2">
+                        className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                      >
                         <TbLogout size={20} /> Logout
                       </button>
                     </div>
@@ -187,7 +194,8 @@ const removeItem = (id) => {
               ) : (
                 <Link
                   to="/login"
-                  className="px-4 py-2 rounded-md bg-[#35AFA0] text-white font-semibold hover:bg-[#2e9c90]">
+                  className="px-4 py-2 rounded-md bg-[#35AFA0] text-white font-semibold hover:bg-[#2e9c90]"
+                >
                   Sign In
                 </Link>
               )}
@@ -197,11 +205,9 @@ const removeItem = (id) => {
             <div
               className="relative flex items-center"
               ref={cartRef}
-              onClick={() => setOpenCart(!openCart)}>
+              onClick={() => setOpenCart(!openCart)}
+            >
               <p className="mr-4 cursor-pointer"> ${subtotal.toFixed(2)}</p>
-              {/* Edited */}
-              {/* <p className="mr-4 cursor-pointer"> ${totalPrice.toFixed(2)}</p> */}
-              {/* *********/}
               <div className="w-10 h-10 flex items-center justify-center rounded-full bg-[#FFF1EE] cursor-pointer relative">
                 <FontAwesomeIcon
                   icon={faBasketShopping}
@@ -230,22 +236,24 @@ const removeItem = (id) => {
                   ) : (
                     <>
                       <ul className="divide-y divide-gray-100 max-h-64 overflow-y-auto">
-                          {items.map((item,index) => (
+                        {items.map((item, index) => (
                           <li
                             key={index}
                             className="flex gap-4 items-center py-3 border-b last:border-none"
                           >
                             {/* صورة المنتج */}
-                            <img
-                              src={item.product.image}
-                              alt={item.product.name}
-                              className="w-14 h-14 object-cover rounded border border-gray-200"
-                            />
+                            <div className="w-[17%] h-full">
+                              <img
+                                src={item.product.image}
+                                alt={item.product.name}
+                                className="w-full h-full object-cover rounded border border-gray-200"
+                              />
+                            </div>
 
                             {/* معلومات المنتج + التحكم */}
                             <div className="flex-1">
                               {/* اسم المنتج */}
-                              <p className="text-sm font-semibold text-gray-800">
+                              <p className="text-[14px] font-[500] text-gray-800 ">
                                 {item.product.name}
                               </p>
 
@@ -254,7 +262,7 @@ const removeItem = (id) => {
                                 {/* التحكم في الكمية */}
                                 <div className="flex items-center gap-2 mr-4">
                                   <button
-                                    onClick={() => decreaseQty(item._id)}
+                                    onClick={() => handleUpdateCart(item.product._id, "decrement")}
                                     className="w-6 h-6 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm font-bold"
                                   >
                                     -
@@ -263,7 +271,7 @@ const removeItem = (id) => {
                                     {item.quantity}
                                   </span>
                                   <button
-                                    onClick={() => increaseQty(item._id)}
+                                   onClick={() => handleUpdateCart(item.product._id, "increment")}
                                     className="w-6 h-6 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm font-bold"
                                   >
                                     +
@@ -271,23 +279,26 @@ const removeItem = (id) => {
                                 </div>
 
                                 {/* السعر الفردي */}
-                                <span className="text-sm text-[#EA2B0F] font-medium">
+                                <span className="text-[12px] font-[500] text-[#EA2B0F]">
                                   ${item.product.price.toFixed(2)}
                                 </span>
                               </div>
                             </div>
 
                             {/* الإجمالي وزر الحذف */}
-                            <div className="flex flex-col items-end gap-2">
+                            <div className="flex flex-col p-2 items-end gap-2">
                               <button
-                                onClick={() => removeItem(item._id)}
+                               onClick={() => removeFromCart(item.product._id)}
                                 className="text-gray-400 hover:text-red-500"
                                 title="Remove"
                               >
                                 <MdDelete size={20} />
                               </button>
-                              <span className="text-sm font-semibold text-gray-800">
-                                ${(item.quantity * item.product.price).toFixed(2)}
+                              <span className="text-[14px] font-[500] text-gray-800">
+                                $
+                                {(item.quantity * item.product.price).toFixed(
+                                  2
+                                )}
                               </span>
                             </div>
                           </li>
@@ -300,25 +311,19 @@ const removeItem = (id) => {
                             ${subtotal.toFixed(2)}
                           </span>
                         </p>
-                        {/**************Edit **************** */}
-                        <p className="text-sm flex justify-between">
-                          <span className="text-[#71778E]">Subtotal:</span>
-                          <span className="text-[#EA2B0F] font-semibold">
-                            ${subtotal.toFixed(2)}
-                          </span>
-                        </p>
-                        {/****************************** */}
                         <div className="flex flex-col gap-2 mt-3">
                           <Link
                             to="/cart"
                             onClick={() => setOpenCart(false)}
-                            className="w-full bg-gray-100 hover:bg-gray-200 text-sm text-center py-2">
+                            className="w-full bg-gray-100 hover:bg-gray-200 text-sm text-center py-2"
+                          >
                             View Cart
                           </Link>
                           <Link
                             to="/checkout"
                             onClick={() => setOpenCart(false)}
-                            className="w-full bg-[#EA2B0F] hover:bg-[#f75c3c] text-white text-sm text-center py-2">
+                            className="w-full bg-[#EA2B0F] hover:bg-[#f75c3c] text-white text-sm text-center py-2"
+                          >
                             Checkout
                           </Link>
                         </div>
@@ -341,7 +346,8 @@ const removeItem = (id) => {
             <div className="relative w-full md:w-auto">
               <button
                 onClick={() => setOpen(!open)}
-                className="flex items-center gap-2 bg-[#35AFA0] text-white font-semibold px-4 py-3 rounded-full text-sm md:text-base w-full md:w-auto">
+                className="flex items-center gap-2 bg-[#35AFA0] text-white font-semibold px-4 py-3 rounded-full text-sm md:text-base w-full md:w-auto"
+              >
                 <IoIosMenu size={20} />
                 <span className="flex-1 text-center whitespace-nowrap">
                   ALL CATEGORIES
@@ -355,11 +361,12 @@ const removeItem = (id) => {
 
               {/* Dropdown */}
               {open && (
-                <ul className="absolute z-10 mt-10 pt-5 w-64 bg-white shadow-lg border border-gray-200">
+                <ul className="absolute z-10 mt-13 pt-5 w-64 bg-white shadow-lg border border-gray-200">
                   {categories.map((cat, index) => (
                     <li
                       key={index}
-                      className="flex items-center gap-2 px-4 py-2 text-[13px] text-[#3E445A] hover:bg-[#F0FAFF] hover:text-[#35AFA0] cursor-pointer">
+                      className="flex items-center gap-2 px-4 py-2 text-[13px] text-[#3E445A] hover:bg-[#F0FAFF] hover:text-[#35AFA0] cursor-pointer"
+                    >
                       <span className="text-xl text-[#3E445A] opacity-50">
                         {cat.icon}
                       </span>
@@ -371,7 +378,8 @@ const removeItem = (id) => {
                     (label, index) => (
                       <li
                         key={index}
-                        className="flex items-center gap-2 px-4 py-2 text-[13px] text-[#3E445A] hover:bg-[#F0FAFF] hover:text-[#35AFA0] cursor-pointer">
+                        className="flex items-center gap-2 px-4 py-2 text-[13px] text-[#3E445A] hover:bg-[#F0FAFF] hover:text-[#35AFA0] cursor-pointer"
+                      >
                         {label}
                       </li>
                     )
@@ -384,7 +392,8 @@ const removeItem = (id) => {
             <div className="md:hidden">
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="text-[#35AFA0] text-2xl p-2 focus:outline-none">
+                className="text-[#35AFA0] text-2xl p-2 focus:outline-none"
+              >
                 {mobileMenuOpen ? <FaTimes /> : <FaBars />}
               </button>
             </div>
@@ -399,7 +408,8 @@ const removeItem = (id) => {
     mobileMenuOpen
       ? "w-full left-0 right-0 top-full bg-white shadow-md border-t border-gray-200 z-20 px-4 py-2"
       : ""
-  } md:static md:bg-transparent md:shadow-none md:border-none`}>
+  } md:static md:bg-transparent md:shadow-none md:border-none`}
+          >
             <li>
               <NavLink
                 to="/"
@@ -407,7 +417,8 @@ const removeItem = (id) => {
                   isActive
                     ? "block w-full bg-[#F0FAFF] text-[#35AFA0] p-2 rounded-md"
                     : "block w-full p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
-                }>
+                }
+              >
                 HOME
               </NavLink>
             </li>
@@ -418,7 +429,8 @@ const removeItem = (id) => {
                   isActive
                     ? "block w-full bg-[#F0FAFF] text-[#35AFA0] p-2 rounded-md"
                     : "block w-full p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
-                }>
+                }
+              >
                 SHOP
               </NavLink>
             </li>
@@ -429,7 +441,8 @@ const removeItem = (id) => {
                   isActive
                     ? "flex items-center gap-2 p-2 rounded-md bg-[#F0FAFF] text-[#35AFA0]"
                     : "flex items-center gap-2 p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
-                }>
+                }
+              >
                 <TbMeat size={20} /> Meats & Seafood
               </NavLink>
             </li>
@@ -440,7 +453,8 @@ const removeItem = (id) => {
                   isActive
                     ? "flex items-center gap-2 p-2 rounded-md bg-[#F0FAFF] text-[#35AFA0]"
                     : "flex items-center gap-2 p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
-                }>
+                }
+              >
                 <MdOutlineBakeryDining size={20} /> Bakery
               </NavLink>
             </li>
@@ -451,7 +465,8 @@ const removeItem = (id) => {
                   isActive
                     ? "flex items-center gap-2 p-2 rounded-md bg-[#F0FAFF] text-[#35AFA0]"
                     : "flex items-center gap-2 p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
-                }>
+                }
+              >
                 <FiCoffee size={20} /> Beverages
               </NavLink>
             </li>
@@ -462,7 +477,8 @@ const removeItem = (id) => {
                   isActive
                     ? "block w-full bg-[#F0FAFF] text-[#35AFA0] p-2 rounded-md"
                     : "block w-full p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
-                }>
+                }
+              >
                 Blog
               </NavLink>
             </li>
@@ -473,7 +489,8 @@ const removeItem = (id) => {
                   isActive
                     ? "block w-full bg-[#F0FAFF] text-[#35AFA0] p-2 rounded-md"
                     : "block w-full p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
-                }>
+                }
+              >
                 Contact
               </NavLink>
             </li>
