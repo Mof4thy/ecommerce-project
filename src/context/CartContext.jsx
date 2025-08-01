@@ -1,9 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import CartApi from "../services/CartApi";
 
-const CartContext = createContext();
-
-
+export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState([]);
@@ -76,4 +74,4 @@ export const CartProvider = ({ children }) => {
     )
 }
 
-export default { CartContext, CartProvider };
+export default { CartProvider };
