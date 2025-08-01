@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
@@ -11,6 +11,8 @@ import { FiCoffee } from "react-icons/fi";
 import { LuUserRound } from "react-icons/lu";
 import { TbLogout } from "react-icons/tb";
 import { HiMiniUserCircle } from "react-icons/hi2";
+import { UserContext } from "../../context/UserContext";
+import { MdDelete } from "react-icons/md";
 
 import {
   LuCoffee,
@@ -27,10 +29,14 @@ import {
 } from "react-icons/lu";
 
 import logo from "../../assets/Link - Bacola Store.jpg";
+import emptyCart from "../../assets/empty-cart.png";
 import { Link, useNavigate, NavLink } from "react-router-dom";
 import { useUser } from "../../hooks/useUser";
+import { useCart } from "../../hooks/UseCart";
 
 export default function Navbar() {
+  const { logout } = useContext(UserContext);
+  const { cart, updateCart, removeFromCart } = useCart();
   const { user, isLoading } = useUser();
 
   const [openuser, setOpenUSer] = useState(false);
@@ -42,11 +48,9 @@ export default function Navbar() {
   const cartRef = useRef();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    logout();
     navigate("/login");
   };
-
-  // إغلاق القائمة عند الضغط خارجها
 
   //  لينكات الناف بار
   const categories = [
@@ -63,26 +67,8 @@ export default function Navbar() {
     { name: "New Arrivals", icon: <LuTruck /> },
   ];
 
-  const cartItems = [
-    {
-      id: 1,
-      name: "Apple",
-      price: 10,
-      qty: 2,
-      image: logo,
-    },
-    {
-      id: 2,
-      name: "Banana",
-      price: 5,
-      qty: 3,
-      image: logo,
-    },
-  ];
-  const subtotal = cartItems.reduce(
-    (acc, item) => acc + item.price * item.qty,
-    0
-  );
+ 
+
 
   // Sign In هل يوجد توكن لو موجود يبق كده ف حاله اللوجن لو مش موجود يبقي هيتغير الايقون لل
   const isAuthenticated = !!localStorage.getItem("token");
@@ -101,6 +87,39 @@ export default function Navbar() {
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
+
+
+  // [1]  بيانات الكارت متخزنه ف متغير 
+    const items = cart?.cart?.items ?? [];
+
+   // [2]  لحساب اجمالي السعر لكل البرودكت المضافه
+ const subtotal = items.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
+
+
+ // زيادة الكمية
+const increaseQty = (id) => {
+  const item = items.find((item) => item._id === id);
+ 
+  
+  if (item) {
+    updateCart(item.product.id, item.quantity + 1);
+    
+  }
+};
+
+// تقليل الكمية
+const decreaseQty = (id) => {
+  const item = items.find((item) => item._id === id);
+  if (item && item.quantity > 1) {
+    updateCart(item.product.id, item.quantity - 1);
+  }
+};
+
+// حذف المنتج
+const removeItem = (id) => {
+   const item = items.find((item) => item._id === id);
+  removeFromCart(item.product.id);
+};
 
   return (
     <>
@@ -192,47 +211,88 @@ export default function Navbar() {
                   className="text-[#EA2B0F] text-xl"
                 />
                 <span className="absolute -top-2 -right-2 bg-[#EA2B0F] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                  {cartItems.length}
+                  {items.length || 0}
                 </span>
               </div>
               {openCart && (
-                <div className="absolute right-0 top-14 w-[90vw] sm:w-80 bg-white border border-gray-300 z-50 shadow-lg p-3">
-                  {cartItems.length === 0 ? (
+                <div
+                  className="absolute right-0 top-14 w-[90vw] sm:w-80 bg-white border border-gray-300 z-50 shadow-lg p-3"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {items.length == 0 ? (
                     <div className="text-center p-5">
                       <img
-                        src={logo}
-                        alt=""
-                        className="w-12 h-12 mx-auto object-cover"
+                        src={emptyCart}
+                        alt="emptyCart"
+                        className="w-20 h-20 mx-auto object-cover"
                       />
-                      <p className="text-gray-500 py-4">
+                      <p className="text-gray-600 font-[500] py-4">
                         No products in the cart.
                       </p>
                     </div>
                   ) : (
                     <>
                       <ul className="divide-y divide-gray-100 max-h-64 overflow-y-auto">
-                        {cartItems.map((item) => (
+                          {items.map((item,index) => (
                           <li
-                            key={item.id}
-                            className="flex gap-3 py-2 items-center"
+                            key={index}
+                            className="flex gap-4 items-center py-3 border-b last:border-none"
                           >
+                            {/* صورة المنتج */}
                             <img
-                              src={item.image}
-                              alt={item.name}
-                              className="w-12 h-12 object-cover"
+                              src={item.product.image}
+                              alt={item.product.name}
+                              className="w-14 h-14 object-cover rounded border border-gray-200"
                             />
+
+                            {/* معلومات المنتج + التحكم */}
                             <div className="flex-1">
-                              <p className="text-sm">{item.name}</p>
-                              <p className="text-xs text-gray-600">
-                                {item.qty} ×{" "}
-                                <span className="text-[#EA2B0F]">
-                                  ${item.price.toFixed(2)}
-                                </span>
+                              {/* اسم المنتج */}
+                              <p className="text-sm font-semibold text-gray-800">
+                                {item.product.name}
                               </p>
+
+                              {/* السعر والكمية */}
+                              <div className="flex items-center mt-1">
+                                {/* التحكم في الكمية */}
+                                <div className="flex items-center gap-2 mr-4">
+                                  <button
+                                    onClick={() => decreaseQty(item._id)}
+                                    className="w-6 h-6 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm font-bold"
+                                  >
+                                    -
+                                  </button>
+                                  <span className="text-sm text-gray-700">
+                                    {item.quantity}
+                                  </span>
+                                  <button
+                                    onClick={() => increaseQty(item._id)}
+                                    className="w-6 h-6 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm font-bold"
+                                  >
+                                    +
+                                  </button>
+                                </div>
+
+                                {/* السعر الفردي */}
+                                <span className="text-sm text-[#EA2B0F] font-medium">
+                                  ${item.product.price.toFixed(2)}
+                                </span>
+                              </div>
                             </div>
-                            <p className="text-sm">
-                              ${(item.qty * item.price).toFixed(2)}
-                            </p>
+
+                            {/* الإجمالي وزر الحذف */}
+                            <div className="flex flex-col items-end gap-2">
+                              <button
+                                onClick={() => removeItem(item._id)}
+                                className="text-gray-400 hover:text-red-500"
+                                title="Remove"
+                              >
+                                <MdDelete size={20} />
+                              </button>
+                              <span className="text-sm font-semibold text-gray-800">
+                                ${(item.quantity * item.product.price).toFixed(2)}
+                              </span>
+                            </div>
                           </li>
                         ))}
                       </ul>
