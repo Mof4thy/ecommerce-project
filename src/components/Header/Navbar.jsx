@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
@@ -29,8 +29,11 @@ import {
 import logo from "../../assets/Link - Bacola Store.jpg";
 import { Link, useNavigate, NavLink } from "react-router-dom";
 import { useUser } from "../../hooks/useUser";
+import { PreviewContext } from "../../context/PreviewContext";
 
 export default function Navbar() {
+  /**************Edit **************** */
+
   const { user, isLoading } = useUser();
 
   const [openuser, setOpenUSer] = useState(false);
@@ -83,7 +86,15 @@ export default function Navbar() {
     (acc, item) => acc + item.price * item.qty,
     0
   );
+  /*******Edit*****/
+  let totalPrice = 0;
+  const { cart } = useContext(PreviewContext);
+  cart.forEach((item) => {
+    totalPrice += item.qty * item.price;
+  });
+  /******** */
 
+  /****************************** */
   // Sign In هل يوجد توكن لو موجود يبق كده ف حاله اللوجن لو مش موجود يبقي هيتغير الايقون لل
   const isAuthenticated = !!localStorage.getItem("token");
 
@@ -134,8 +145,7 @@ export default function Navbar() {
                 <>
                   <button
                     onClick={() => setOpenUSer(!openuser)}
-                    className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100"
-                  >
+                    className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100">
                     <FontAwesomeIcon
                       icon={faUser}
                       className="text-gray-600 text-xl"
@@ -153,8 +163,7 @@ export default function Navbar() {
                       <Link
                         to="/profile"
                         onClick={() => setOpenUSer(false)}
-                        className=" px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-                      >
+                        className=" px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2">
                         <LuUserRound size={20} /> Profile
                       </Link>
                       <button
@@ -162,8 +171,7 @@ export default function Navbar() {
                           setOpenUSer(false);
                           handleLogout();
                         }}
-                        className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-                      >
+                        className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center gap-2">
                         <TbLogout size={20} /> Logout
                       </button>
                     </div>
@@ -172,8 +180,7 @@ export default function Navbar() {
               ) : (
                 <Link
                   to="/login"
-                  className="px-4 py-2 rounded-md bg-[#35AFA0] text-white font-semibold hover:bg-[#2e9c90]"
-                >
+                  className="px-4 py-2 rounded-md bg-[#35AFA0] text-white font-semibold hover:bg-[#2e9c90]">
                   Sign In
                 </Link>
               )}
@@ -183,16 +190,21 @@ export default function Navbar() {
             <div
               className="relative flex items-center"
               ref={cartRef}
-              onClick={() => setOpenCart(!openCart)}
-            >
-              <p className="mr-4 cursor-pointer"> ${subtotal.toFixed(2)}</p>
+              onClick={() => setOpenCart(!openCart)}>
+              {/* <p className="mr-4 cursor-pointer"> ${subtotal.toFixed(2)}</p> */}
+              {/* Edited */}
+              <p className="mr-4 cursor-pointer"> ${totalPrice.toFixed(2)}</p>
+              {/* *********/}
               <div className="w-10 h-10 flex items-center justify-center rounded-full bg-[#FFF1EE] cursor-pointer relative">
                 <FontAwesomeIcon
                   icon={faBasketShopping}
                   className="text-[#EA2B0F] text-xl"
                 />
                 <span className="absolute -top-2 -right-2 bg-[#EA2B0F] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                  {cartItems.length}
+                  {/* {cartItems.length} */} {/*** */}
+                  {/****  Edit *******/}
+                  {cart.length}
+                  {/************/}
                 </span>
               </div>
               {openCart && (
@@ -214,8 +226,7 @@ export default function Navbar() {
                         {cartItems.map((item) => (
                           <li
                             key={item.id}
-                            className="flex gap-3 py-2 items-center"
-                          >
+                            className="flex gap-3 py-2 items-center">
                             <img
                               src={item.image}
                               alt={item.name}
@@ -235,6 +246,33 @@ export default function Navbar() {
                             </p>
                           </li>
                         ))}
+                        {/**************Edit **************** */}
+                        {cart.map((item) => {
+                          return (
+                            <li
+                              key={item.id}
+                              className="flex gap-3 py-2 items-center">
+                              <img
+                                src={item.image}
+                                alt={item.name}
+                                className="w-12 h-12 object-cover"
+                              />
+                              <div className="flex-1">
+                                <p className="text-sm">{item.name}</p>
+                                <p className="text-xs text-gray-600">
+                                  {item.qty} ×{" "}
+                                  <span className="text-[#EA2B0F]">
+                                    ${item?.price?.toFixed(2)}
+                                  </span>
+                                </p>
+                              </div>
+                              <p className="text-sm">
+                                ${(item.qty * item.price).toFixed(2)}
+                              </p>
+                            </li>
+                          );
+                        })}
+                        {/****************************** */}
                       </ul>
                       <div className="mt-3 border-t border-gray-400 pt-3">
                         <p className="text-sm flex justify-between">
@@ -243,19 +281,25 @@ export default function Navbar() {
                             ${subtotal.toFixed(2)}
                           </span>
                         </p>
+                        {/**************Edit **************** */}
+                        <p className="text-sm flex justify-between">
+                          <span className="text-[#71778E]">Subtotal:</span>
+                          <span className="text-[#EA2B0F] font-semibold">
+                            ${totalPrice}
+                          </span>
+                        </p>
+                        {/****************************** */}
                         <div className="flex flex-col gap-2 mt-3">
                           <Link
                             to="/cart"
                             onClick={() => setOpenCart(false)}
-                            className="w-full bg-gray-100 hover:bg-gray-200 text-sm text-center py-2"
-                          >
+                            className="w-full bg-gray-100 hover:bg-gray-200 text-sm text-center py-2">
                             View Cart
                           </Link>
                           <Link
                             to="/checkout"
                             onClick={() => setOpenCart(false)}
-                            className="w-full bg-[#EA2B0F] hover:bg-[#f75c3c] text-white text-sm text-center py-2"
-                          >
+                            className="w-full bg-[#EA2B0F] hover:bg-[#f75c3c] text-white text-sm text-center py-2">
                             Checkout
                           </Link>
                         </div>
@@ -278,8 +322,7 @@ export default function Navbar() {
             <div className="relative w-full md:w-auto">
               <button
                 onClick={() => setOpen(!open)}
-                className="flex items-center gap-2 bg-[#35AFA0] text-white font-semibold px-4 py-3 rounded-full text-sm md:text-base w-full md:w-auto"
-              >
+                className="flex items-center gap-2 bg-[#35AFA0] text-white font-semibold px-4 py-3 rounded-full text-sm md:text-base w-full md:w-auto">
                 <IoIosMenu size={20} />
                 <span className="flex-1 text-center whitespace-nowrap">
                   ALL CATEGORIES
@@ -297,8 +340,7 @@ export default function Navbar() {
                   {categories.map((cat, index) => (
                     <li
                       key={index}
-                      className="flex items-center gap-2 px-4 py-2 text-[13px] text-[#3E445A] hover:bg-[#F0FAFF] hover:text-[#35AFA0] cursor-pointer"
-                    >
+                      className="flex items-center gap-2 px-4 py-2 text-[13px] text-[#3E445A] hover:bg-[#F0FAFF] hover:text-[#35AFA0] cursor-pointer">
                       <span className="text-xl text-[#3E445A] opacity-50">
                         {cat.icon}
                       </span>
@@ -310,8 +352,7 @@ export default function Navbar() {
                     (label, index) => (
                       <li
                         key={index}
-                        className="flex items-center gap-2 px-4 py-2 text-[13px] text-[#3E445A] hover:bg-[#F0FAFF] hover:text-[#35AFA0] cursor-pointer"
-                      >
+                        className="flex items-center gap-2 px-4 py-2 text-[13px] text-[#3E445A] hover:bg-[#F0FAFF] hover:text-[#35AFA0] cursor-pointer">
                         {label}
                       </li>
                     )
@@ -324,8 +365,7 @@ export default function Navbar() {
             <div className="md:hidden">
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="text-[#35AFA0] text-2xl p-2 focus:outline-none"
-              >
+                className="text-[#35AFA0] text-2xl p-2 focus:outline-none">
                 {mobileMenuOpen ? <FaTimes /> : <FaBars />}
               </button>
             </div>
@@ -340,8 +380,7 @@ export default function Navbar() {
     mobileMenuOpen
       ? "w-full left-0 right-0 top-full bg-white shadow-md border-t border-gray-200 z-20 px-4 py-2"
       : ""
-  } md:static md:bg-transparent md:shadow-none md:border-none`}
-          >
+  } md:static md:bg-transparent md:shadow-none md:border-none`}>
             <li>
               <NavLink
                 to="/"
@@ -349,8 +388,7 @@ export default function Navbar() {
                   isActive
                     ? "block w-full bg-[#F0FAFF] text-[#35AFA0] p-2 rounded-md"
                     : "block w-full p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
-                }
-              >
+                }>
                 HOME
               </NavLink>
             </li>
@@ -361,8 +399,7 @@ export default function Navbar() {
                   isActive
                     ? "block w-full bg-[#F0FAFF] text-[#35AFA0] p-2 rounded-md"
                     : "block w-full p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
-                }
-              >
+                }>
                 SHOP
               </NavLink>
             </li>
@@ -373,8 +410,7 @@ export default function Navbar() {
                   isActive
                     ? "flex items-center gap-2 p-2 rounded-md bg-[#F0FAFF] text-[#35AFA0]"
                     : "flex items-center gap-2 p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
-                }
-              >
+                }>
                 <TbMeat size={20} /> Meats & Seafood
               </NavLink>
             </li>
@@ -385,8 +421,7 @@ export default function Navbar() {
                   isActive
                     ? "flex items-center gap-2 p-2 rounded-md bg-[#F0FAFF] text-[#35AFA0]"
                     : "flex items-center gap-2 p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
-                }
-              >
+                }>
                 <MdOutlineBakeryDining size={20} /> Bakery
               </NavLink>
             </li>
@@ -397,8 +432,7 @@ export default function Navbar() {
                   isActive
                     ? "flex items-center gap-2 p-2 rounded-md bg-[#F0FAFF] text-[#35AFA0]"
                     : "flex items-center gap-2 p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
-                }
-              >
+                }>
                 <FiCoffee size={20} /> Beverages
               </NavLink>
             </li>
@@ -409,8 +443,7 @@ export default function Navbar() {
                   isActive
                     ? "block w-full bg-[#F0FAFF] text-[#35AFA0] p-2 rounded-md"
                     : "block w-full p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
-                }
-              >
+                }>
                 Blog
               </NavLink>
             </li>
@@ -421,8 +454,7 @@ export default function Navbar() {
                   isActive
                     ? "block w-full bg-[#F0FAFF] text-[#35AFA0] p-2 rounded-md"
                     : "block w-full p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
-                }
-              >
+                }>
                 Contact
               </NavLink>
             </li>

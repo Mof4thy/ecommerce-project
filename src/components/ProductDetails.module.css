@@ -12,9 +12,6 @@
   padding: 53px 12px;
   display: flex;
   flex-wrap: wrap;
-  li {
-    list-style: none;
-  }
 }
 .overlay {
   position: fixed;
@@ -33,15 +30,9 @@
     font-weight: bold;
     line-height: 32px;
   }
-  .cardContainer {
-    display: flex;
-    min-height: 400px;
-    overflow: hidden;
-    margin: 8px 0;
-    gap: 8px;
-  }
+
   .card {
-    min-width: 238px ;
+    min-width: 238px;
     display: flex;
     flex-direction: column;
     border-radius: 4px;
@@ -51,20 +42,6 @@
       min-height: 200px;
       width: 100%;
       position: relative;
-      button {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        transform: translate(-50%, 0%);
-        background-color: #35afa0;
-        color: #fff;
-        padding: 8px;
-        border-radius: 50%;
-        display: inline-block;
-        cursor: pointer;
-        min-width: 40px;
-        aspect-ratio: 1 / 1;
-      }
     }
   }
 }
@@ -79,5 +56,17 @@
   flex-basis: 1fr;
   margin-top: auto;
 }
-
-
+.button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translate(-10%, -50%);
+  background-color: #35afa0;
+  color: #fff;
+  padding: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
+  min-width: 40px;
+  aspect-ratio: 1 / 1;
+}

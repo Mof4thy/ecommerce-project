@@ -1,0 +1,141 @@
+.fullPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #fff;
+}
+.animationContainer {
+  width: 80px;
+  height: 80px;
+  position: relative;
+  transform: translate(-50%,-50%);
+  div {
+    width: 40px;
+    aspect-ratio: 1/1;
+    background-color: #111111;
+    transform: rotate(45deg);
+    position: absolute;
+
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-out;
+  }
+  div.one {
+    left: 50%;
+    top: 0;
+    background-color: #436bff;
+    animation-name: divOne;
+    border-radius: 0%;
+  }
+  div.two {
+    left: 50%;
+    top: 100%;
+    animation-name: divTwo;
+    background-color: #436bff;
+    border-radius: 0%;
+  }
+  div.three {
+    left: 100%;
+    top: 50%;
+    animation-name: divThree;
+
+    background-color: #2b007a;
+    border-radius: 0%;
+  }
+  div.four {
+    left: 0;
+    top: 50%;
+    animation-name: divFour;
+    background-color: #2b007a;
+    border-radius: 0%;
+  }
+}
+@keyframes divOne {
+  0% {
+    left: 50%;
+    top: 0;
+    border-radius: 0%;
+  }
+  25% {
+    left: 100%;
+    top: 50%;
+    border-radius: 50%;
+  }
+  50% {
+    left: 50%;
+    top: 100%;
+    border-radius: 0%;
+  }
+  75% {
+    left: 0;
+    top: 50%;
+    border-radius: 50%;
+  }
+}
+@keyframes divTwo {
+  0% {
+    left: 50%;
+    top: 100%;
+    border-radius: 0%;
+  }
+  25% {
+    left: 0;
+    top: 50%;
+    border-radius: 50%;
+  }
+  50% {
+    left: 50%;
+    top: 0;
+    border-radius: 0%;
+  }
+  75% {
+    left: 100%;
+    top: 50%;
+    border-radius: 50%;
+  }
+}
+@keyframes divThree {
+  0% {
+    left: 100%;
+    top: 50%;
+    border-radius: 0%;
+  }
+  25% {
+    left: 50%;
+    top: 100%;
+    border-radius: 50%;
+  }
+  50% {
+    left: 0;
+    top: 50%;
+    border-radius: 0%;
+  }
+  75% {
+    left: 50%;
+    top: 0;
+    border-radius: 50%;
+  }
+}
+@keyframes divFour {
+  0% {
+    left: 0;
+    top: 50%;
+    border-radius: 0%;
+  }
+  25% {
+    left: 50%;
+    top: 0;
+    border-radius: 50%;
+  }
+  50% {
+    left: 100%;
+    top: 50%;
+    border-radius: 0%;
+  }
+  75% {
+    left: 50%;
+    top: 100%;
+    border-radius: 50%;
+  }
+}

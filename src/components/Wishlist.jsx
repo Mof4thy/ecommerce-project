@@ -26,7 +26,7 @@ const Wishlist = () => {
                 <i className="fa-solid fa-delete-left"></i>
               </button>
               <p>{item?.name}</p>
-              <strong>{item.price.min}</strong>
+              <strong>{item.price}</strong>
               <p>{item.quantity}</p>
               <button
                 className={Styles.addTOCart}

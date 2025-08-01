@@ -1,26 +1,24 @@
 import React, { useContext } from "react";
 import styles from "./Preview.module.css";
 import { PreviewContext } from "../context/PreviewContext";
-import CustomModal from "./CustomModal";
-const Preview = () => {
-  const { preview, previewIndicator, setPreviewIndicator } =
-    useContext(PreviewContext);
-  //ده المصفوفة اللي علي اليسار
+
+const Preview = ({ data }) => {
+ 
+  const { previewIndicator, setPreviewIndicator } = useContext(PreviewContext);
+
   return (
     <>
-    
       <div className={`${styles.preview}`}>
-        {preview.map((item, idx) => {
+        {data.map((item, idx) => {
           return (
             <div
               key={idx}
               className={`${idx === previewIndicator ? styles.active : ""}`}
               onClick={() => {
-                //بغير بس في قيمة ال indicator
-                //ها تفهم قصدي لما تشوف ProductShowCase
-                
                 setPreviewIndicator(idx);
-              }}></div>
+              }}>
+              <img src={`${data[Number([idx])]}`} alt="NULL" />
+            </div>
           );
         })}
       </div>

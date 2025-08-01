@@ -13,11 +13,11 @@ const Checkout = () => {
               <div
                 style={{ display: "flex", gap: "16px", alignItems: "center" }}>
                 <div className={styles.img}>
-                  <h2 className={styles.quantity}>{item.quantity}</h2>
+                  <h2 className={styles.quantity}>{(item.qty)}</h2>
                 </div>
                 <h3 className={styles.productName}>{item.name}</h3>
               </div>
-              <span>${item.price.min * item.quantity}</span>
+              <span>${(item.discountedPrice * item.qty).toFixed(2)}</span>
             </div>
           );
         })}
@@ -27,7 +27,7 @@ const Checkout = () => {
             <h3>
               Subtotal:{" "}
               <span>
-                {cart.reduce((prev, curr) => prev + curr.quantity, 0)}
+                {cart.reduce((prev, curr) => prev + curr.qty, 0)}
               </span>{" "}
               Items
             </h3>
@@ -35,9 +35,9 @@ const Checkout = () => {
               $
               <span>
                 {cart.reduce(
-                  (prev, curr) => prev + curr.quantity * curr.price.min,
+                  (prev, curr) => prev + curr.qty * curr.discountedPrice,
                   0
-                )}
+                ).toFixed(2)}
               </span>
             </h3>
           </div>
@@ -49,10 +49,10 @@ const Checkout = () => {
             <h3>Total</h3>
             <span>
               <span className={styles.reduc} style={{ opacity: "0.7" }}>USD </span>$
-              {cart.reduce(
-                (prev, curr) => prev + curr.quantity * curr.price.min,
+              {(cart.reduce(
+                (prev, curr) => prev + curr.qty * curr.discountedPrice,
                 0
-              ) + 2.46}
+              ) + 2.46).toFixed(2)}
             </span>
           </div>
           <p>Including $2.46 in taxes</p>
