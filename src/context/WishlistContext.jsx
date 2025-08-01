@@ -15,11 +15,12 @@ export const WishlistProvider = ({ children }) => {
     const token = localStorage.getItem("token");
 
     useEffect(() => {
+        if(token){
         const fetchWishlist = async () => {
             try {
                 setIsLoading(true);
                 const response = await WishlistApi.getWishlist(token);
-                setWishlist(response);
+                setWishlist(response.wishlist);
             }
             catch(error){
                 setError(error);
@@ -29,12 +30,16 @@ export const WishlistProvider = ({ children }) => {
             }
         }
         fetchWishlist();
+        }
+        else{
+            setWishlist([]);
+        }
         }, [token]);
 
     const addToWishlist = async (productId) => {
         try {
             const response = await WishlistApi.addToWishlist(productId, token);
-            setWishlist(response);
+            setWishlist(response.wishlist);
         }
         catch(error){
             setError(error);
@@ -44,7 +49,7 @@ export const WishlistProvider = ({ children }) => {
     const removeFromWishlist = async (productId) => {
         try {
             const response = await WishlistApi.removeFromWishlist(productId, token);
-            setWishlist(response);
+            setWishlist(response.wishlist);
         }
         catch(error){
             setError(error);
@@ -54,7 +59,7 @@ export const WishlistProvider = ({ children }) => {
     const clearWishlist = async () => {
         try {
             const response = await WishlistApi.clearWishlist(token);
-            setWishlist(response);
+            setWishlist(response.wishlist);
         }
         catch(error){
             setError(error);

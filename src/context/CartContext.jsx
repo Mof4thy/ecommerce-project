@@ -3,7 +3,6 @@ import CartApi from "../services/CartApi";
 import { useUser } from "../hooks/useUser";
 
 export const CartContext = createContext();
-export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState([]);
@@ -12,6 +11,8 @@ export const CartProvider = ({ children }) => {
     const { token } = useUser();
 
     useEffect(() => {
+
+        if(token){
         const fetchCart = async () => {
             try {
                 setIsLoading(true);
@@ -24,9 +25,12 @@ export const CartProvider = ({ children }) => {
             finally{
                 setIsLoading(false);
             }
+            }
+            fetchCart();
         }
-        fetchCart();
-        
+        else{
+            setCart([]);
+        }
     }, [token]);
 
 
@@ -35,7 +39,6 @@ export const CartProvider = ({ children }) => {
     }
 
     const productCartQuantity = (productId) => {
-        console.log("cart item quantity", cart.items.find(item => item.product._id === productId)?.quantity);
         return cart.items?.find(item => item.product._id === productId)?.quantity || 0;
     }
 

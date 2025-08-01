@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import React, { useContext, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
@@ -14,7 +13,8 @@ import { TbLogout } from "react-icons/tb";
 import { HiMiniUserCircle } from "react-icons/hi2";
 import { UserContext } from "../../context/UserContext";
 import { MdDelete } from "react-icons/md";
-
+import { useUser } from "../../hooks/useUser";
+import { useCart } from "../../hooks/useCart";
 import {
   LuCoffee,
   LuCookie,
@@ -32,8 +32,6 @@ import {
 import logo from "../../assets/Link - Bacola Store.jpg";
 import emptyCart from "../../assets/empty-cart.png";
 import { Link, useNavigate, NavLink } from "react-router-dom";
-import { useUser } from "../../hooks/useUser";
-import { useCart } from "../../hooks/UseCart";
 
 export default function Navbar() {
   const { logout } = useContext(UserContext);
@@ -200,9 +198,9 @@ const removeItem = (id) => {
               className="relative flex items-center"
               ref={cartRef}
               onClick={() => setOpenCart(!openCart)}>
-              {/* <p className="mr-4 cursor-pointer"> ${subtotal.toFixed(2)}</p> */}
+              <p className="mr-4 cursor-pointer"> ${subtotal.toFixed(2)}</p>
               {/* Edited */}
-              <p className="mr-4 cursor-pointer"> ${totalPrice.toFixed(2)}</p>
+              {/* <p className="mr-4 cursor-pointer"> ${totalPrice.toFixed(2)}</p> */}
               {/* *********/}
               <div className="w-10 h-10 flex items-center justify-center rounded-full bg-[#FFF1EE] cursor-pointer relative">
                 <FontAwesomeIcon
@@ -306,7 +304,7 @@ const removeItem = (id) => {
                         <p className="text-sm flex justify-between">
                           <span className="text-[#71778E]">Subtotal:</span>
                           <span className="text-[#EA2B0F] font-semibold">
-                            ${totalPrice}
+                            ${subtotal.toFixed(2)}
                           </span>
                         </p>
                         {/****************************** */}

@@ -8,14 +8,19 @@ import { useNavigate } from 'react-router-dom';
 const ProductCard = React.memo(({product}) => {
 
     const { addToCart, updateCart, isInCart, productCartQuantity } = useCart();
-    const { user } = useUser();
+    const { token } = useUser();
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    useEffect(() => {
-        setIsLoggedIn(user !== null);
-    }, [user]);
-
+   
+    useEffect(()=>{
+        if(token){
+            setIsLoggedIn(true);
+        }
+        else {
+            setIsLoggedIn(false)
+        }
+    },[token])
 
 
     const handleAddToCart = () =>{
@@ -37,7 +42,7 @@ const ProductCard = React.memo(({product}) => {
         }
     }
 
-    const gotoproductdetail = () =>{
+    const gotoproductdetail = () =>{    
         navigate(`/ProductDetails/${product._id}`);
     }
 
@@ -63,16 +68,16 @@ const ProductCard = React.memo(({product}) => {
 
             {!isLoggedIn && 
             <div className="flex py-1 sm:py-2 bg-gray-400 hover:bg-gray-500 rounded-xl sm:rounded-2xl justify-center items-center">
-                <button className="text-sm sm:text-md w-full font-semibold text-white cursor-pointer">Login to Add to Cart</button>
+                <button className="text-sm sm:text-md w-full font-semibold text-white cursor-pointer" onClick={()=>{navigate('/login')}}>Login to Add to Cart</button>
             </div>}
 
 
-            {!isInCart(product._id) && 
+            {!isInCart(product._id) && isLoggedIn &&
             <div className="flex py-1 sm:py-2 bg-[#35AFA0] hover:bg-green-600 rounded-xl sm:rounded-2xl justify-center items-center">
                 <button className=" text-sm sm:text-md w-full font-semibold text-white cursor-pointer" onClick={handleAddToCart}>Add to Cart</button>
             </div>}
 
-            {isInCart(product._id) && 
+            {isInCart(product._id) && isLoggedIn &&
             <div className="flex border border-gray-200 rounded-xl sm:rounded-2xl justify-between items-center gap-1 sm:gap-2 overflow-hidden mt-auto">
                 <span className="px-2 sm:px-3 py-1 sm:py-2 bg-gray-200 cursor-pointer hover:bg-gray-300 " onClick={() => handleUpdateCart("decrement")}> <Minus size={14} className="sm:w-[18px] sm:h-[18px]" /> </span>
                 <span className="text-xs sm:text-sm font-bold text-black min-w-[20px] text-center"> {productCartQuantity(product._id)} </span>

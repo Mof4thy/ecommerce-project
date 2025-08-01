@@ -14,7 +14,7 @@ const UserProvider = ({children}) =>{
     useEffect(() => {
         if (token) localStorage.setItem("token", token);
         else localStorage.removeItem("token");
-    }, [token]);
+    }, [token ]);
 
 
     // useQuery is a hook that fetches data from the server and caches it
@@ -28,7 +28,6 @@ const UserProvider = ({children}) =>{
         retry: false,
     }); // token is the dependency of the query
 
-    
 
     const register = async (userData) =>{
         try {
@@ -61,7 +60,6 @@ const UserProvider = ({children}) =>{
 
 
     return (        
-
         <UserContext.Provider value={{token, login, logout, register, user, isLoading, error, refetch}}>
             {children}
         </UserContext.Provider>
