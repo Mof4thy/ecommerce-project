@@ -30,12 +30,12 @@ export const CartProvider = ({ children }) => {
   }, [token]);
 
   const isInCart = (productId) => {
-    return cart.items?.some((item) => item.product._id === productId);
+    return cart.items?.some((item) => item?.product?._id === productId);
   };
 
   const productCartQuantity = (productId) => {
     return (
-      cart.items?.find((item) => item.product._id === productId)?.quantity || 0
+      cart.items?.find((item) => item?.product?._id === productId)?.quantity || 0
     );
   };
 

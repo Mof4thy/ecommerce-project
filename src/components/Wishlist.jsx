@@ -7,6 +7,13 @@ const Wishlist = () => {
   const { wishlist, setWishlist } = useContext(PreviewContext);
   const { cart, addToCart } = useCart(); // استخدام useCart
 
+  // Filter out invalid wishlist items
+  const validWishlistItems = (wishlist ?? []).filter(item => 
+    item && 
+    item.id && 
+    item.name
+  );
+
   return (
     <div className={Styles.wishlist}>
       <div className={Styles.inner}>
@@ -18,7 +25,7 @@ const Wishlist = () => {
           <div>#In Stock</div>
           <div>Action</div>
         </div>
-        {wishlist.map((item) => {
+        {validWishlistItems.map((item) => {
           return (
             <div key={item.id} className={Styles.wishlistItem}>
               <button
@@ -27,15 +34,15 @@ const Wishlist = () => {
                 }}>
                 <i className="fa-solid fa-delete-left"></i>
               </button>
-              <p>{item?.name}</p>
-              <strong>{item.price}</strong>
-              <p>{item.quantity}</p>
+              <p>{item.name || 'Unknown Product'}</p>
+              <strong>${(item.price || 0).toFixed(2)}</strong>
+              <p>{item.quantity || 'Out of Stock'}</p>
               <button
                 className={Styles.addTOCart}
                 onClick={() => {
-                  
+                  // Safe cart checking with null safety
                   const alreadyInCart = cart.items?.some(
-                    (el) => el.product._id === item.id
+                    (el) => el?.product?._id === item.id
                   );
                   if (!alreadyInCart) {
                     addToCart(item); 

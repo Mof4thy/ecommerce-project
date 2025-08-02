@@ -1,12 +1,10 @@
 import { createContext, useState, useEffect } from "react";
 import WishlistApi from "../services/WishlistApi";
 
-const WishlistContext = createContext();
-
+export const WishlistContext = createContext();
 
 
 export const WishlistProvider = ({ children }) => { 
-
 
     const [wishlist, setWishlist] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -73,4 +71,4 @@ export const WishlistProvider = ({ children }) => {
     )
 }
 
-export default { WishlistContext, WishlistProvider };
+export default  WishlistProvider ;
