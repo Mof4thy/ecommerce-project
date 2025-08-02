@@ -1,8 +1,12 @@
 import React, { useContext } from "react";
 import Styles from "./Wishlist.module.css";
 import { PreviewContext } from "../context/PreviewContext";
+import { useCart } from "../hooks/useCart";
+
 const Wishlist = () => {
-  const { wishlist, setWishlist, setCart } = useContext(PreviewContext);
+  const { wishlist, setWishlist } = useContext(PreviewContext);
+  const { cart, addToCart } = useCart(); // استخدام useCart
+
   return (
     <div className={Styles.wishlist}>
       <div className={Styles.inner}>
@@ -19,9 +23,7 @@ const Wishlist = () => {
             <div key={item.id} className={Styles.wishlistItem}>
               <button
                 onClick={() => {
-                  setWishlist((prev) => {
-                    return prev.filter((el) => el.id !== item.id);
-                  });
+                  setWishlist((prev) => prev.filter((el) => el.id !== item.id));
                 }}>
                 <i className="fa-solid fa-delete-left"></i>
               </button>
@@ -31,13 +33,13 @@ const Wishlist = () => {
               <button
                 className={Styles.addTOCart}
                 onClick={() => {
-                  setCart((prev) => {
-                    const res = prev.find((el) => el.id === item.id);
-                    if (res) {
-                      return [...prev];
-                    }
-                    return [...prev, item];
-                  });
+                  
+                  const alreadyInCart = cart.items?.some(
+                    (el) => el.product._id === item.id
+                  );
+                  if (!alreadyInCart) {
+                    addToCart(item); 
+                  }
                 }}>
                 Add To Cart
               </button>

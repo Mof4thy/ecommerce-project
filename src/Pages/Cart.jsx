@@ -1,16 +1,18 @@
-import React, { useContext } from "react";
-import { PreviewContext } from "../context/PreviewContext";
+import React from "react";
 import styles from "./Cart.module.css";
+import { useCart } from "../hooks/useCart";
+
 export default function Cart() {
-  const { cart, setCart } = useContext(PreviewContext);
+  const { cart, clearCart, removeFromCart, updateCart } = useCart();
+
   return (
     <div>
-      {!cart[0] && <p>No Items</p>}
-      {cart.map((item) => {
+      {cart.items?.map((item) => {
+        const product = item.product;
         return (
-          <div key={item.id} className={styles.cartItem}>
+          <div key={product._id} className={styles.cartItem}>
             <div className={styles.image}>
-              <img src={item.image} alt="Null" srcset="" />
+              <img src={product.image} alt="Null" />
             </div>
 
             <div style={{ width: "100%" }}>
@@ -21,18 +23,16 @@ export default function Cart() {
                   width: "100%",
                   alignItems: "center",
                 }}>
-                <h2>{item.name}</h2>{" "}
+                <h2>{product.name}</h2>
                 <div
                   className={styles.delete}
-                  onClick={() => {
-                    setCart((prev) => {
-                      return prev.filter((el) => el.id !== item.id);
-                    });
-                  }}>
+                  onClick={() => removeFromCart(product._id)}>
                   <i className="fa-solid fa-trash-can"></i>
                 </div>
               </div>
-              <p>{item.description}</p>
+
+              <p>{product.description}</p>
+
               <div
                 style={{
                   display: "flex",
@@ -43,55 +43,27 @@ export default function Cart() {
                 <div className={styles.controls}>
                   <div
                     className={styles.rounded}
-                    onClick={() => {
-                      setCart((prev) => {
-                        return prev.map((el) => {
-                          return el.id === item.id
-                            ? {
-                                ...el,
-                                qty: --item.qty < 0 ? 0 : item.qty,
-                              }
-                            : el;
-                        });
-                      });
-                    }}>
+                    onClick={() => updateCart(product._id, "decrement")}>
                     <i className="fa-solid fa-minus"></i>
                   </div>
                   <div className={`${styles.rounded} ${styles.quantity}`}>
-                    {item.qty}
+                    {item.quantity}
                   </div>
                   <div
                     className={styles.rounded}
-                    onClick={() => {
-                      setCart((prev) => {
-                        return prev.map((el) => {
-                          return el.id === item.id
-                            ? {
-                                ...el,
-                                qty:
-                                  ++item.qty <= item.quantity
-                                    ? item.qty
-                                    : item.quantity,
-                              }
-                            : el;
-                        });
-                      });
-                    }}>
+                    onClick={() => updateCart(product._id, "increment")}>
                     <i className="fa-solid fa-plus"></i>
                   </div>
                 </div>
-                <p className={styles.price}>${item.qty * item.price}</p>
+                <p className={styles.price}>${item.quantity * product.price}</p>
               </div>
             </div>
           </div>
         );
       })}
-      {cart[0] && (
-        <button
-          className={styles.emptyItems}
-          onClick={() => {
-            setCart([]);
-          }}>
+
+      {cart.items?.length > 0 && (
+        <button className={styles.emptyItems} onClick={() => clearCart()}>
           Empty the cart
         </button>
       )}

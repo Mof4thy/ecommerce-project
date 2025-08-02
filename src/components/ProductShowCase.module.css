@@ -105,3 +105,26 @@
   line-height: 1.5;
   margin: 8px 0;
 }
+.closeBtn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: translate(-50%, 50%);
+  cursor: pointer;
+  padding: 8px;
+  background-color: #be481179;
+  min-width: 40px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  border-radius: 50%;
+}
+.closeBtn:hover {
+  background-color: #be4811;
+}
+.none {
+  display: none;
+
+}
