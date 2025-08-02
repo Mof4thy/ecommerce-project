@@ -6,6 +6,7 @@ import Pagination from "../components/shop/Pagination ";
 import { useState, useEffect, useMemo } from "react";
 import { useProducts } from "../hooks/useProducts";
 
+
 const Shop = () => {
 
     // products data from the server (cached)

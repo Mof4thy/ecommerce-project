@@ -1,8 +1,16 @@
 import React, { useContext } from "react";
 import { PreviewContext } from "../context/PreviewContext";
 import styles from "./Cart.module.css";
+
 export default function Cart() {
   const { cart, setCart } = useContext(PreviewContext);
+ 
+
+  
+ 
+
+ 
+
   return (
     <div>
       {!cart[0] && <p>No Items</p>}
@@ -98,3 +106,4 @@ export default function Cart() {
     </div>
   );
 }
+s

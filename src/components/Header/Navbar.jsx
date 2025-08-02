@@ -47,6 +47,8 @@ export default function Navbar() {
   const menuRef = useRef(null);
   const cartRef = useRef();
 
+  
+
   const handleLogout = () => {
     logout();
     navigate("/login");
@@ -86,8 +88,7 @@ export default function Navbar() {
   }, []);
 
   // [1]  بيانات الكارت متخزنه ف متغير
- const items = cart?.items ?? []
-  
+  const items = cart?.items ?? [];
 
   // [2]  لحساب اجمالي السعر لكل البرودكت المضافه
   const subtotal = items.reduce(
@@ -95,34 +96,13 @@ export default function Navbar() {
     0
   );
 
-  // زيادة الكمية
-//  const increaseQty = (id) => {
-//   const item = items.find((item) => item._id  === id);
-
-//   if (item) {
-//     updateCart(item.product._id, item.quantity + 1);
-//   }
-// };
-
-//   // تقليل الكمية
-//  const decreaseQty = (id) => {
-//   const item = items.find((item) => item._id === id);
-
-//   if (item && item.quantity > 1) {
-    
-//     updateCart(item.product._id, item.quantity - 1);
-//   }
-// };
-
-
- const handleUpdateCart = (productId, operation) => {
-  if (productId) {
-    updateCart(productId, operation);
-  } else {
-    console.log("Please login to update cart");
-  }
-};
-
+  const handleUpdateCart = (productId, operation) => {
+    if (productId) {
+      updateCart(productId, operation);
+    } else {
+      console.log("Please login to update cart");
+    }
+  };
 
   return (
     <>
@@ -135,19 +115,24 @@ export default function Navbar() {
           </Link>
 
           {/* Search Bar */}
-          <div className="flex-1 min-w-0 bg-[#F3F4F7] rounded-lg flex items-center px-3">
+          <form
+           
+            className="flex-1 min-w-0 bg-[#F3F4F7] rounded-lg flex items-center px-3"
+          >
             <input
               type="text"
               placeholder="Search for Products, fruit, meat, eggs .etc..."
               className="w-full h-10 bg-transparent border-none focus:outline-none text-sm"
+              // value={searchQuery}
+              // onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <button>
+            <button type="submit">
               <FontAwesomeIcon
                 icon={faMagnifyingGlass}
                 className="text-gray-600 text-lg"
               />
             </button>
-          </div>
+          </form>
 
           {/* User + Cart */}
           <div className="flex items-center gap-3">
@@ -262,7 +247,12 @@ export default function Navbar() {
                                 {/* التحكم في الكمية */}
                                 <div className="flex items-center gap-2 mr-4">
                                   <button
-                                    onClick={() => handleUpdateCart(item.product._id, "decrement")}
+                                    onClick={() =>
+                                      handleUpdateCart(
+                                        item.product._id,
+                                        "decrement"
+                                      )
+                                    }
                                     className="w-6 h-6 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm font-bold"
                                   >
                                     -
@@ -271,7 +261,12 @@ export default function Navbar() {
                                     {item.quantity}
                                   </span>
                                   <button
-                                   onClick={() => handleUpdateCart(item.product._id, "increment")}
+                                    onClick={() =>
+                                      handleUpdateCart(
+                                        item.product._id,
+                                        "increment"
+                                      )
+                                    }
                                     className="w-6 h-6 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm font-bold"
                                   >
                                     +
@@ -288,7 +283,7 @@ export default function Navbar() {
                             {/* الإجمالي وزر الحذف */}
                             <div className="flex flex-col p-2 items-end gap-2">
                               <button
-                               onClick={() => removeFromCart(item.product._id)}
+                                onClick={() => removeFromCart(item.product._id)}
                                 className="text-gray-400 hover:text-red-500"
                                 title="Remove"
                               >
@@ -435,40 +430,28 @@ export default function Navbar() {
               </NavLink>
             </li>
             <li>
-              <NavLink
-                to="/Meats&Seafood"
-                className={({ isActive }) =>
-                  isActive
-                    ? "flex items-center gap-2 p-2 rounded-md bg-[#F0FAFF] text-[#35AFA0]"
-                    : "flex items-center gap-2 p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
-                }
+              <Link
+                to="#"
+                className="flex items-center gap-2 p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
               >
                 <TbMeat size={20} /> Meats & Seafood
-              </NavLink>
+              </Link>
             </li>
             <li>
-              <NavLink
-                to="/bekery"
-                className={({ isActive }) =>
-                  isActive
-                    ? "flex items-center gap-2 p-2 rounded-md bg-[#F0FAFF] text-[#35AFA0]"
-                    : "flex items-center gap-2 p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
-                }
+              <Link
+                to="#"
+                className="flex items-center gap-2 p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
               >
                 <MdOutlineBakeryDining size={20} /> Bakery
-              </NavLink>
+              </Link>
             </li>
             <li>
-              <NavLink
-                to="/beverages"
-                className={({ isActive }) =>
-                  isActive
-                    ? "flex items-center gap-2 p-2 rounded-md bg-[#F0FAFF] text-[#35AFA0]"
-                    : "flex items-center gap-2 p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
-                }
+              <Link
+                to="#"
+                className="flex items-center gap-2 p-2 rounded-md hover:bg-[#F0FAFF] hover:text-[#35AFA0]"
               >
                 <FiCoffee size={20} /> Beverages
-              </NavLink>
+              </Link>
             </li>
             <li>
               <NavLink
