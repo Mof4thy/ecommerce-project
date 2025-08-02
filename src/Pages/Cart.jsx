@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./Cart.module.css";
 import { useCart } from "../hooks/useCart";
+import { Link } from "react-router-dom";
 
 export default function Cart() {
   const { cart, clearCart, removeFromCart, updateCart } = useCart();
@@ -62,11 +63,18 @@ export default function Cart() {
         );
       })}
 
-      {cart.items?.length > 0 && (
-        <button className={styles.emptyItems} onClick={() => clearCart()}>
-          Empty the cart
-        </button>
-      )}
+      <div style={{ width: "fit-content",display:"flex",gap:"16px" ,margin:"auto"}}>
+        <Link className={styles.checkout} to="/checkout">
+          Checkout
+        </Link>
+        <div style={{ display: "flex", justifyContent: "flex-start" }}>
+          {cart.items?.length > 0 && (
+            <button className={styles.emptyItems} onClick={() => clearCart()}>
+              Empty the cart
+            </button>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
