@@ -32,7 +32,7 @@ import logo from "../../assets/Link - Bacola Store.jpg";
 import emptyCart from "../../assets/empty-cart.png";
 import { Link, useNavigate, NavLink } from "react-router-dom";
 import { useUser } from "../../hooks/useUser";
-import { useCart } from "../../hooks/UseCart";
+import { useCart } from "../../hooks/useCart";
 
 export default function Navbar() {
   const { logout } = useContext(UserContext);
@@ -87,12 +87,17 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
+
   // [1]  بيانات الكارت متخزنه ف متغير
-  const items = cart?.items ?? [];
+  // const items = cart?.items ?? [];
+
+  // [1]  بيانات الكارت متخزنه ف متغير وتصفية العناصر التي تحتوي على منتجات صحيحة
+  const items = (cart?.items ?? []).filter(item => item?.product && item.product.price != null)
+  
 
   // [2]  لحساب اجمالي السعر لكل البرودكت المضافه
   const subtotal = items.reduce(
-    (acc, item) => acc + item.product.price * item.quantity,
+    (acc, item) => acc + (item.product.price * item.quantity),
     0
   );
 
@@ -221,16 +226,20 @@ export default function Navbar() {
                   ) : (
                     <>
                       <ul className="divide-y divide-gray-100 max-h-64 overflow-y-auto">
-                        {items.map((item, index) => (
+                        {items.map((item, index) => {
+                          // Additional safety check in case filter missed something
+                          if (!item?.product) return null;
+                          
+                          return (
                           <li
-                            key={index}
+                            key={item.product._id || index}
                             className="flex gap-4 items-center py-3 border-b last:border-none"
                           >
                             {/* صورة المنتج */}
                             <div className="w-[17%] h-full">
                               <img
-                                src={item.product.image}
-                                alt={item.product.name}
+                                src={item.product.image || '/placeholder-image.jpg'}
+                                alt={item.product.name || 'Product'}
                                 className="w-full h-full object-cover rounded border border-gray-200"
                               />
                             </div>
@@ -239,7 +248,7 @@ export default function Navbar() {
                             <div className="flex-1">
                               {/* اسم المنتج */}
                               <p className="text-[14px] font-[500] text-gray-800 ">
-                                {item.product.name}
+                                {item.product.name || 'Unknown Product'}
                               </p>
 
                               {/* السعر والكمية */}
@@ -275,7 +284,7 @@ export default function Navbar() {
 
                                 {/* السعر الفردي */}
                                 <span className="text-[12px] font-[500] text-[#EA2B0F]">
-                                  ${item.product.price.toFixed(2)}
+                                  ${(item.product.price || 0).toFixed(2)}
                                 </span>
                               </div>
                             </div>
@@ -291,13 +300,14 @@ export default function Navbar() {
                               </button>
                               <span className="text-[14px] font-[500] text-gray-800">
                                 $
-                                {(item.quantity * item.product.price).toFixed(
+                                {(item.quantity * (item.product.price || 0)).toFixed(
                                   2
                                 )}
                               </span>
                             </div>
                           </li>
-                        ))}
+                          );
+                        })}
                       </ul>
                       <div className="mt-3 border-t border-gray-400 pt-3">
                         <p className="text-sm flex justify-between">

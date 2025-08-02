@@ -4,9 +4,7 @@ import WishlistApi from "../services/WishlistApi";
 export const WishlistContext = createContext();
 
 
-
 export const WishlistProvider = ({ children }) => { 
-
 
     const [wishlist, setWishlist] = useState([]);
     const [isLoading, setIsLoading] = useState(false);

@@ -8,6 +8,7 @@ import CustomModal from "./CustomModal";
 import { useProductById } from "../hooks/useProductById";
 import LoadingC from "./LoadingC";
 import { useProducts } from "../hooks/useProducts";
+import { CartContext } from "../context/CartContext";
 const ProductDetails = () => {
   const navigate = useNavigate();
   const sentData = useRef(true);
@@ -16,7 +17,7 @@ const ProductDetails = () => {
   const { data, isLoading, isError } = useProductById(id);
   const { data: products } = useProducts();
   // console.log(data?);
-
+  const {productCartQuantity} = useContext(CartContext);
   if (isLoading) {
     return <LoadingC></LoadingC>;
   }
@@ -24,7 +25,7 @@ const ProductDetails = () => {
     return <p>Error Occured</p>;
   }
   if (sentData.current) {
-    const quantity = cart.find((el) => el.id === data.product.id)?.qty || 0;
+    const quantity = productCartQuantity(data.product.id) || 0;
     setPreview([{ ...data.product, qty: quantity }]);
     sentData.current = false;
   }

@@ -1,9 +1,11 @@
 import React, { useContext } from "react";
 import styles from "./ProductShowCase.module.css";
 import { PreviewContext } from "../context/PreviewContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { CartContext } from "../context/CartContext";
 
 const ProductShowCase = ({ data }) => {
+  const navigate = useNavigate();
   const {
     preview,
     setPreview,
@@ -12,9 +14,22 @@ const ProductShowCase = ({ data }) => {
     setCart,
     previewIndicator,
   } = useContext(PreviewContext);
+  const {
+    addToCart,
+    productCartQuantity,
+    updateCart,
+  } = useContext(CartContext);
+
   // ده الجزء اللي علي اليمين حاليا احنا معانا ال المصفوفة فيها العناصر اللي اضفناها
   return (
     <>
+      <div
+        className={styles.closeBtn}
+        onClick={() => {
+          navigate(`/`);
+        }}>
+        X
+      </div>
       <div className={styles.product}>
         <img src={`${data?.images[Number(previewIndicator)]}`} alt="NULL" />
       </div>
@@ -22,8 +37,7 @@ const ProductShowCase = ({ data }) => {
       <div className={`${styles.text}`}>
         <h2 className={styles.heading}>{preview[0]?.name}</h2>
         <strong>
-          {/* ?. بتجنب خطأ undefind */}${preview[0]?.price?.min}{" "}
-          {preview[0]?.discountedPrice?.toFixed(2)}
+          ${preview[0]?.price?.min} {preview[0]?.discountedPrice?.toFixed(2)}
         </strong>
         <p className={styles.ava}>available in:</p>
         <ul className={styles.size}>
@@ -31,10 +45,13 @@ const ProductShowCase = ({ data }) => {
             return <li key={idx}>{size}</li>;
           })}
         </ul>
-        <ul className={styles.itemsCount}>
+        <ul
+          className={`${styles.itemsCount} ${
+            productCartQuantity(preview[0]._id) < 1 ? styles.none : ""
+          }`}
+          style={{ margin: "30px 0" }}>
           <li
             onClick={() => {
-              // زرار التقليل بقلل من qty value
               setPreview((prev) => {
                 return prev.map((el, idx) =>
                   idx === 0
@@ -45,25 +62,31 @@ const ProductShowCase = ({ data }) => {
                     : el
                 );
               });
+              updateCart(preview[0]._id, "decrement");
             }}>
             <i className="fa-solid fa-minus"></i>
           </li>
-          <li>{preview[0]?.qty}</li>
+          <li>{productCartQuantity(preview[0]._id)}</li>
           <li
             onClick={() => {
-              //زرار الزيادة
               setPreview((prev) => {
                 return prev.map((el, idx) =>
                   idx === 0 ? { ...el, qty: el.qty + 1 } : el
                 );
               });
+              updateCart(preview[0]._id, "increment");
             }}>
             <i className="fa-solid fa-plus"></i>
           </li>
         </ul>
         <button
-          className={styles.addBtn}
+          style={{ margin: "30px 0" }}
+          className={`${styles.addBtn} ${
+            !(productCartQuantity(preview[0].id)) < 1 ? styles.none : ""
+          }`}
           onClick={() => {
+            addToCart(preview[0].id);
+            
             setCart((prev) => {
               const res = prev.find((el) => el.id === preview[0]?.id);
               if (res) {
@@ -96,7 +119,7 @@ const ProductShowCase = ({ data }) => {
                         : item
                     );
                   }
-                  return [...prev]; //مش عايزه يضيف كذا مرة
+                  return [...prev];
                 }
                 return [...prev, preview[0]];
               });
