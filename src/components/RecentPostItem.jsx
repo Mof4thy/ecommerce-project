@@ -1,4 +1,3 @@
-// RecentPostItem.jsx
 import React from "react";
 
 export default function RecentPostItem({ post }) {
@@ -16,3 +15,4 @@ export default function RecentPostItem({ post }) {
     </div>
   );
 }
+

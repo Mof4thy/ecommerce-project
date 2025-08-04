@@ -1,34 +1,25 @@
 import React from "react";
 
+import AboutbgImg from '../images/aboutbg.PNG';
+import CEOImg from '../images/CEO.PNG';
 const About = () => {
   return (
     <div className="font-sans bg-white">
-      {/* --- الجزء الأول: الهيدر مع الصورة --- */}
+     
       <div className="relative h-[400px] w-full">
-        {/* الصورة الخلفية */}
+
         <img 
-          src="/your-header-image.jpg" // استبدل بمسار صورتك
+          src= {AboutbgImg} 
           alt="Bacola Header"
-          className="w-full h-full object-cover absolute inset-0"
+          className="w-full h-full object-cover"
         />
         
-        {/* طبقة تظليل */}
-        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-        
-        {/* النص المركزي */}
-        <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
-            About <span className="text-orange-400">Bacola</span>
-          </h1>
-          <p className="text-xl md:text-2xl font-medium text-white">
-            WE CAN DO MORE FOR YOU
-          </p>
-        </div>
+       
+
       </div>
 
-      {/* --- الجزء الثاني: المحتوى --- */}
       <div className="max-w-5xl px-6 py-16 ps-6">
-        {/* الفقرة الأولى */}
+      
         <div className="mb-3">
           <p className="text-gray-700 text-lg leading-8 mb-8">
             In nec purus eget neque accumsan finibus. Duis condimentum elit ut libero commodo laculis. 
@@ -36,7 +27,7 @@ const About = () => {
             Donec augue diam, tristique et ultricies nec.
           </p>
           
-          {/* العنوان الجانبي */}
+          
           <h2 className="text-2xl md:text-2xl font-bold text-gray-900 mb-6 pl-8 ml-5 max-w-xl">
             Quisque erat urna, congue et libero in eleifend euismod velit.
           </h2>
@@ -49,14 +40,16 @@ const About = () => {
           </p>
         </div>
       </div>
+
      
-      {/* --- الجزء الثالث: صورة المدير والمحتوى --- */}
+
+
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid md:grid-cols-2 items-start">
           {/* Image */}
           <div className="w-full h-full">
             <img
-              src="https://via.placeholder.com/500x700" // بدّل اللينك بالصورة بتاعتك
+              src= {CEOImg} 
               alt="CEO"
               className="w-100 h-130 object-cover rounded-lg shadow ml-20"
             />
@@ -84,9 +77,10 @@ const About = () => {
           </div>
         </div>
 
-        {/* --- الجزء الرابع: البلوك الأبيض المتداخل --- */}
-        <div className="relative z-20">
-          <div className="mt-[-60px] mx-auto bg-white p-6 rounded-lg shadow-lg text-gray-600 leading-relaxed text-sm max-w-5xl">
+
+
+        <div className="relative z-20 ml-35">
+         <div className="mt-[-60px] mx-auto bg-white p-6 rounded-lg shadow-lg text-gray-600 leading-relaxed text-sm max-w-5xl">
             In nec purus eget neque accumsan finibus. Duis condimentum elit ut libero commodo iaculis
             In nec purus eget neque accumsan finibus. Duis condimentum elit ut libero commodo iaculis...
             In nec purus eget neque accumsan finibus. Duis condimentum elit ut libero commodo iaculis

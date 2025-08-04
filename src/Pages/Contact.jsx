@@ -16,7 +16,9 @@ export default function Contact() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Location */}
           <div className="bg-gray-100 p-6 rounded-lg shadow">
-            <MapPin size={40} className="text-green-600 mb-2 mx-auto" />
+
+            <MapPin size={40} className="text-teal-500 mb-2 mx-auto" />
+
 
             <h4 className="font-semibold mb-1">102 Street 2714 Donovan</h4>
             <p className="text-sm text-gray-500">Lorem ipsum dolor...</p>
@@ -24,14 +26,18 @@ export default function Contact() {
 
           {/* Phone */}
           <div className="bg-gray-100 p-6 rounded-lg shadow">
-            <Phone size={40} className="text-green-600 mb-2 mx-auto" />
+
+            <Phone size={40} className="text-teal-500 mb-2 mx-auto" />
+
             <h4 className="font-semibold mb-1">+02 1234 567 88</h4>
             <p className="text-sm text-gray-500">Lorem ipsum dolor...</p>
           </div>
 
           {/* Email */}
           <div className="bg-gray-100 p-6 rounded-lg shadow">
-            <Mail size={40} className="text-green-600 mb-2 mx-auto" />
+
+            <Mail size={40} className="text-teal-500 mb-2 mx-auto" />
+
             <h4 className="font-semibold mb-1">info@example.com</h4>
             <p className="text-sm text-gray-500">Lorem ipsum dolor...</p>
           </div>
@@ -67,7 +73,9 @@ export default function Contact() {
           <div className="text-left">
             <button
               type="submit"
-              className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded shadow"
+
+              className="bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 rounded shadow"
+
             >
               Send Message
             </button>
@@ -77,3 +85,4 @@ export default function Contact() {
     </div>
   );
 }
+

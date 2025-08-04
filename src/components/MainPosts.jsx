@@ -1,11 +1,15 @@
 import React from "react";
+import blog1img from '../images/blog1.PNG'
+import blog2img from '../images/blog2.PNG'
 
 export default function MainPosts() {
   const mainPosts = [
     {
       id: 1,
       title: "But I must explain to you how all this mistaken idea",
-      image: "/img/blog1.jpg",
+
+      image: blog1img,
+
       date: "12 June 2024",
       author: "Sara ElDeeb",
       category: "category",
@@ -15,7 +19,9 @@ export default function MainPosts() {
     {
       id: 2,
       title: "The Problem With Typefaces on the Web",
-      image: "/img/blog2.jpg",
+
+      image: blog2img,
+
       date: "27 June 2024",
       author: "Sara ElDeeb",
       category: "category",

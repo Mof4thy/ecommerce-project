@@ -1,4 +1,9 @@
 import React from "react";
+import Post1img from '../images/blog1.PNG';
+import Post2img from '../images/blog2.PNG';
+import Post3img from '../images/post3.PNG';
+import Widgetimg from '../images/widget.PNG';
+
 import {
   FaFacebookF,
   FaTwitter,
@@ -12,17 +17,22 @@ export default function Sidebar() {
     {
       id: 1,
       title: "But I must explain to you how all this mistaken idea",
-      image: "/img/post1.jpg",
+      image: Post1img,
+
     },
     {
       id: 2,
       title: "The Problem With Typefaces on the Web",
-      image: "/img/post2.jpg",
+
+      image: Post2img,
+
     },
     {
       id: 3,
       title: "English Breakfast Tea With Tasty Donut Desserts",
-      image: "/img/post3.jpg",
+
+      image: Post3img,
+
     },
   ];
 
@@ -50,7 +60,9 @@ export default function Sidebar() {
                 alt={post.title}
                 className="w-12 h-12 rounded-full object-cover"
               />
-              <span className="absolute -top-1 -left-1 bg-cyan-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full font-semibold border-2 border-white">
+
+              <span className="absolute -top-1 -right-1 bg-cyan-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full font-semibold border-2 border-white">
+
                 {post.id}
               </span>
             </div>
@@ -86,7 +98,9 @@ export default function Sidebar() {
       {/* Widget Banner */}
       <div>
         <h3 className="font-semibold text-lg mb-4">WIDGET BANNER</h3>
-        <img src="/img/promo.jpg" alt="widget" className="rounded" />
+
+        <img src={Widgetimg} alt="widget" className="w-full h-[400px] rounded" />
+
       </div>
 
       {/* Tags */}
