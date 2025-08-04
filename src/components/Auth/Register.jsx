@@ -1,0 +1,125 @@
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useUser } from "../../hooks/useUser"
+import Loading from "../Loading";
+
+export default function Register() {
+   const { register } = useUser(); // من الكونتكست
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+   
+    setIsLoading(true);
+
+    try {
+      // مثال على API وهمي يمكنك تغييره لباك اند حقيقي
+      await register(formData);
+    
+      navigate("/login");
+    } catch (error) {
+      console.error("Registration error:", error);
+      alert("Registration failed");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <>
+      {isLoading && <Loading />}
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-10">
+        <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
+          <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
+            Register
+          </h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Full Name
+              </label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                required
+                value={formData.name}
+                onChange={handleChange}
+                className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#35AFA0]"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Email Address
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                required
+                value={formData.email}
+                onChange={handleChange}
+                className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#35AFA0]"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Password
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                required
+                value={formData.password}
+                onChange={handleChange}
+                className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#35AFA0]"
+              />
+            </div>
+
+          
+
+            <button
+              type="submit"
+              className="w-full bg-[#35AFA0] text-white py-2 rounded-md hover:bg-teal-500 transition"
+            >
+              Register
+            </button>
+          </form>
+
+          <p className="text-center text-sm text-gray-600 mt-4">
+            Already have an account?{" "}
+            <Link to="/login" className="text-[#35AFA0] hover:underline">
+              Login here
+            </Link>
+          </p>
+        </div>
+      </div>
+    </>
+  );
+}

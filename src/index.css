@@ -1,0 +1,24 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import "tailwindcss";
+
+
+
+*{
+    box-sizing: border-box !important;
+  }
+  
+/*   
+  @theme {
+    --color-Primary-Red: #C1272D;         
+    --color-Warm-Accent: #FFD460;       
+    --color-Background-Neutral: #FAF3E0;  
+    --color-Fresh-Accent: #7C9473;        
+    --color-Dark-Accent: #3E2C23;         
+    --color-Light-Gray: #D3D3D3;          
+  } */
+
+ body {
+    font-family: "Inter","Dosis", sans-serif;
+}
+
